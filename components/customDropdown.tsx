@@ -67,9 +67,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
           </a>
         ))}
         {isLoading && (
-          <div className="flex justify-center items-center py-2">
-            <RingLoader color="#4A56E2" size={20} />
-          </div>
+          <div className="flex justify-center items-center py-2"></div>
         )}
       </div>
     </div>
