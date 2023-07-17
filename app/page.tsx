@@ -170,9 +170,9 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen py-24 mx-auto px-8 md:px-16 lg:px-24">
+    <div className="flex flex-col w-full min-h-screen py-24 mx-auto px-8 md:px-16 lg:px-24 overflow-hidden">
       <Image
-        src="/logo.png"
+        src="/logoa.png"
         alt="A logo"
         width={200}
         height={200}
@@ -209,30 +209,30 @@ export default function Chat() {
       {iframeContent && (
         <div className="flex flex-col items-center h-full">
           <div className={`border rounded-xl ${deviceSize}`}>
-            <div className="flex items-center justify-between p-3 border-b px-12 ">
+            <div className="flex items-center justify-between p-3 border-b lg:px-12 ">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
               <div className="flex-1 text-center">
-                <div className="flex items-center justify-center space-x-2 bg-gray-200 rounded-xl mx-8 py-1">
+                <div className="flex items-center justify-center space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
                   acme.co
                   {isLoading && <span className="ml-4 animate-spin">🟠</span>}
                   <button
-                    className="ml-4"
+                    className="ml-4 hidden md:flex"
                     onClick={() => setDeviceSize(DeviceSize.Mobile)}
                   >
                     📱
                   </button>
                   <button
-                    className="ml-4"
+                    className="ml-4 hidden md:flex"
                     onClick={() => setDeviceSize(DeviceSize.Tablet)}
                   >
                     💻
                   </button>
                   <button
-                    className="ml-4"
+                    className="ml-4 hidden md:flex"
                     onClick={() => setDeviceSize(DeviceSize.Desktop)}
                   >
                     🖥️
@@ -241,7 +241,7 @@ export default function Chat() {
                     className="ml-4"
                     onClick={() => setCodeViewActive(!codeViewActive)}
                   >
-                    🖨️
+                    {codeViewActive ? "🖼️" : "🖨️"}
                   </button>
                 </div>
               </div>
