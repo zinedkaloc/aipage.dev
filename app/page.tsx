@@ -4,7 +4,6 @@ import { useChat } from "ai/react";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import Frame from "react-frame-component";
 import dynamic from "next/dynamic";
-import MonacoEditor from "react-monaco-editor";
 import Image from "next/image";
 
 enum DeviceSize {
