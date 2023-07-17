@@ -1,5 +1,4 @@
 "use client";
-
 import { useChat } from "ai/react";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import Frame from "react-frame-component";
@@ -171,7 +170,7 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen py-24 mx-auto stretch absolute px-48">
+    <div className="flex flex-col w-full min-h-screen py-24 mx-auto px-8 md:px-16 lg:px-24">
       <Image
         src="/logo.png"
         alt="A logo"
