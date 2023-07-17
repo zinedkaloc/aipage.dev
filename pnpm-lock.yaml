@@ -6,7 +6,6 @@ specifiers:
   '@types/react-dom': 18.2.4
   '@types/react-html-parser': ^2.0.2
   '@types/react-resizable': ^3.0.4
-  '@types/reveal': ^4.2.0
   ai: ^2.1.7
   autoprefixer: ^10.4.14
   eslint: ^7.32.0
@@ -20,11 +19,8 @@ specifiers:
   react-dom: ^18.2.0
   react-frame-component: ^5.2.6
   react-html-parser: ^2.0.2
-  react-monaco-editor: ^0.53.0
   react-resizable: ^3.0.5
   react-select: ^5.7.3
-  react-spinners: ^0.13.8
-  reveal.js: ^4.5.0
   tailwindcss: ^3.3.2
   typescript: 5.0.4
 
@@ -38,11 +34,8 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-frame-component: 5.2.6_biqbaboplfbrettd7655fr4n2y
   react-html-parser: 2.0.2_react@18.2.0
-  react-monaco-editor: 0.53.0_uotkorn6wtjastxvooxg3u726m
   react-resizable: 3.0.5_biqbaboplfbrettd7655fr4n2y
   react-select: 5.7.3_psemcf34ovg2dno52nagbe3daa
-  react-spinners: 0.13.8_biqbaboplfbrettd7655fr4n2y
-  reveal.js: 4.5.0
 
 devDependencies:
   '@types/node': 17.0.45
@@ -50,7 +43,6 @@ devDependencies:
   '@types/react-dom': 18.2.4
   '@types/react-html-parser': 2.0.2
   '@types/react-resizable': 3.0.4
-  '@types/reveal': 4.2.0
   autoprefixer: 10.4.14_postcss@8.4.24
   eslint: 7.32.0
   eslint-config-next: 13.4.4-canary.11_cgdknpc562nnyruteofhkegnom
@@ -468,10 +460,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
       csstype: 3.1.2
-
-  /@types/reveal/4.2.0:
-    resolution: {integrity: sha512-lhTCUrk8pU/9SWcqbLwCy/AFjCp9S2hcDGoKAIycWGcHujUrDKMXWVkOvbSWk/gohZwwfuxQxucBaqvYAM5DTQ==}
-    dev: true
 
   /@types/scheduler/0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
@@ -2575,19 +2563,6 @@ packages:
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  /react-monaco-editor/0.53.0_uotkorn6wtjastxvooxg3u726m:
-    resolution: {integrity: sha512-ZITzsauH4CsicCGddtpgjRACaKNTVEL2hnjYFx8QMuc8zmsgfgq7D2GcF8OQsa2URIdGm/Zl7YwY2fmWpvqs/g==}
-    peerDependencies:
-      '@types/react': '>=16 <= 18'
-      monaco-editor: ^0.38.0
-      react: '>=16 <= 18'
-    dependencies:
-      '@types/react': 18.2.7
-      monaco-editor: 0.40.0
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
   /react-resizable/3.0.5_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-vKpeHhI5OZvYn82kXOs1bC8aOXktGU5AmKAgaZS4F5JPburCtbmDPqE7Pzp+1kN4+Wb81LlF33VpGwWwtXem+w==}
     peerDependencies:
@@ -2619,16 +2594,6 @@ packages:
       use-isomorphic-layout-effect: 1.1.2_bfoz4c5kom3f237nig75ykjhhy
     transitivePeerDependencies:
       - '@types/react'
-    dev: false
-
-  /react-spinners/0.13.8_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-3e+k56lUkPj0vb5NDXPVFAOkPC//XyhKPJjvcGjyMNPWsBKpplfeyialP74G7H7+It7KzhtET+MvGqbKgAqpZA==}
-    peerDependencies:
-      react: ^16.0.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:
@@ -2725,11 +2690,6 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
     dev: true
-
-  /reveal.js/4.5.0:
-    resolution: {integrity: sha512-Lx1hUWhJR7Y7ScQNyGt7TFzxeviDAswK2B0cn9RwbPZogTMRgS8+FTr+/12KNHOegjvWKH0H0EGwBARNDPTgWQ==}
-    engines: {node: '>=10.0.0'}
-    dev: false
 
   /rimraf/3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
