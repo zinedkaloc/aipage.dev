@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useState } from "react";
-import { RingLoader } from "react-spinners";
 
 type TechIcon = {
   name: string;
