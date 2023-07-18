@@ -6,9 +6,9 @@ We welcome and appreciate contributions from the community! By contributing to t
 
 There are several ways you can contribute to this project:
 
-- Report bugs: If you come across any issues or bugs, please [open a new issue](https://github.com/zinedkaloc/ai-landing-page-generator/issues) and provide as much detail as possible.
+- Report bugs: If you come across any issues or bugs, please [open a new issue](https://github.com/zinedkaloc/ai-pge/issues) and provide as much detail as possible.
 
-- Suggest new features: Have an idea for a new feature or improvement? We'd love to hear it! [Open a new issue](https://github.com/zinedkaloc/ai-landing-page-generator/issues) and let us know.
+- Suggest new features: Have an idea for a new feature or improvement? We'd love to hear it! [Open a new issue](https://github.com/zinedkaloc/ai-pge/issues) and let us know.
 
 - Submit pull requests: If you have code changes or enhancements you'd like to contribute, you can do so by opening a pull request. Make sure to follow the guidelines below when submitting your pull request.
 
@@ -18,7 +18,7 @@ To ensure smooth collaboration and maintain code quality, please follow these gu
 
 1. Fork the repository and create a new branch for your changes.
 
-2. Before making changes, make sure your branch is up to date with the main repository.
+2. Before making changes, make sure your branch is up to date with the master repository.
 
 3. Follow the coding style and conventions used in the project.
 
@@ -34,7 +34,7 @@ To ensure smooth collaboration and maintain code quality, please follow these gu
 
 9. Be responsive to any feedback or questions regarding your pull request.
 
-10. Once your changes are approved, they will be merged into the main repository.
+10. Once your changes are approved, they will be merged into the master repository.
 
 ## Code of Conduct
 
