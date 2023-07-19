@@ -10,7 +10,7 @@ The AI Landing Page Generator is a powerful tool that allows you to quickly crea
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/zinedkaloc/lp-genie.git`
+1. Clone the repository: `git clone https://github.com/zinedkaloc/ai-page.git`
 2. Install the required dependencies: `pnpm install`
 3. Copy the `.env.example` file to `.env` and fill in the required information.
 
