@@ -179,10 +179,7 @@ export default function Chat() {
           height={200}
           className="mx-auto h-32 w-32"
         />
-        <form
-          onSubmit={handleSubmit}
-          className="mb-4 w-full md:w-[800px] mx-auto"
-        >
+        <form onSubmit={handleSubmit} className="mb-4 md:w-[800px] mx-auto">
           <input
             className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
               isLoading ? "rounded-xl" : "shadow-sm"
@@ -212,7 +209,7 @@ export default function Chat() {
         </div>
       )}
       {iframeContent && (
-        <div className="flex flex-col items-center h-full">
+        <div className="flex flex-col items-center h-full w-full">
           <div className={`border rounded-xl ${deviceSize}`}>
             <div className="flex items-center justify-between p-3 border-b lg:px-12 ">
               <div className="flex items-center space-x-2">
