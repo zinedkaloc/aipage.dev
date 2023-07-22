@@ -170,31 +170,36 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen py-24 mx-auto px-8 md:px-16 lg:px-24 overflow-hidden">
-      <Image
-        src="/logoa.png"
-        alt="A logo"
-        width={200}
-        height={200}
-        className="mx-auto h-32 w-32"
-      />
-      <form onSubmit={handleSubmit} className="mb-4">
-        <input
-          className={`w-full p-2 mb-4 border text-ellipsis border-gray-300 rounded ${
-            isLoading ? "rounded-xl" : "rounded-xl shadow-xl"
-          }`}
-          value={input}
-          // update placeholder when the GPT is typing
-          placeholder={isLoading ? "Generating... " : "Say something..."}
-          onChange={handleInputChange}
-          disabled={isLoading}
+    <div className="flex bg-gradient-to-b from-white via-white to-slate-300 flex-col w-full min-h-screen py-24 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center justify-center">
+      <div className="flex flex-col w-full justify-center items-center">
+        <Image
+          src="/logoa.png"
+          alt="A logo"
+          width={200}
+          height={200}
+          className="mx-auto h-32 w-32"
         />
-        {isLoading ? null : (
-          <p className="text-xs ml-2 font-medium text-gray-900">
-            Tip: A landing page for Medical website
-          </p>
-        )}
-      </form>
+        <form
+          onSubmit={handleSubmit}
+          className="mb-4 w-full md:w-[800px] mx-auto"
+        >
+          <input
+            className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
+              isLoading ? "rounded-xl" : "shadow-sm"
+            }`}
+            value={input}
+            // update placeholder when the GPT is typing
+            placeholder={isLoading ? "Generating... " : "Say something..."}
+            onChange={handleInputChange}
+            disabled={isLoading}
+          />
+          {isLoading ? null : (
+            <p className="text-xs ml-4 font-medium text-gray-500">
+              <b>Tip:</b> A landing page for Medical website
+            </p>
+          )}
+        </form>
+      </div>
 
       {editingMode && selectedElement && (
         <div className="absolute z-50">
