@@ -170,16 +170,76 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex bg-gradient-to-b from-white via-white to-slate-300 flex-col w-full min-h-screen py-24 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center justify-center">
+    <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
+      <header className="w-full px-6 py-4 absolute top-0">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center tracking-tight">
+            <strong className="font-bold text-xl">ai</strong>
+            <span className="text-xl">page.dev</span>
+          </div>
+          <a
+            href="https://twitter.com/aipagedev"
+            className="flex items-center text-gray-900 hover:text-blue-500 transition-colors"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <svg
+              className="mr-1 h-5 w-5 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+            </svg>
+          </a>
+        </div>
+      </header>
+      <section>
+        <div className="fixed bottom-6 right-6 cursor-pointer transition-colors group">
+          <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute  right-8 bottom-4 transform translate-y-2 w-48">
+            Star us on Github to show your support
+          </div>
+          <a
+            href="https://github.com/zinedkaloc/aipage.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="text-2xl"
+          >
+            ⭐️
+          </a>
+        </div>
+      </section>
+
+      {isLoading ? null : (
+        <div className="relative py-6 flex flex-col justify-center">
+          <Image
+            src="/logoa.png"
+            alt="A logo"
+            width={200}
+            height={200}
+            className="mx-auto h-32 w-32"
+          />
+          <div className="text-center sm:w-11/12 md:w-[800px]">
+            <h1 className="text-5xl font-bold text-ellipsis tracking-tight">
+              Create landing page easily{" "}
+              <span className="font-normal">with ai</span>
+            </h1>
+            <p className="text-lg text-gray-700 mt-4 tracking-tight">
+              Experience the future of web design. With ai, creating a landing
+              page is not only easy but also efficient, precise, and tailored to
+              your needs.
+            </p>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col w-full justify-center items-center">
-        <Image
-          src="/logoa.png"
-          alt="A logo"
-          width={200}
-          height={200}
-          className="mx-auto h-32 w-32"
-        />
-        <form onSubmit={handleSubmit} className="mb-4 md:w-[800px] mx-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="mb-4 w-full sm:w-11/12 md:w-[800px] mx-auto"
+        >
           <input
             className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
               isLoading ? "rounded-xl" : "shadow-sm"
@@ -209,9 +269,9 @@ export default function Chat() {
         </div>
       )}
       {iframeContent && (
-        <div className="flex flex-col items-center h-full w-full">
+        <div className="flex flex-col items-center h-2/3 w-full">
           <div className={`border rounded-xl ${deviceSize}`}>
-            <div className="flex items-center justify-between p-3 border-b lg:px-12 ">
+            <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
