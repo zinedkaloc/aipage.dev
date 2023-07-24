@@ -10,9 +10,9 @@ The AI Landing Page Generator is a powerful tool that allows you to quickly crea
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/zinedkaloc/ai-page.git`
+1. Clone the repository: `git clone https://github.com/zinedkaloc/aipage.dev.git`
 2. Install the required dependencies: `pnpm install`
-3. Navigate to the project directory `cd ai-page`
+3. Navigate to the project directory `cd aipage.dev`
 4. Copy the `.env.example` file to `.env` and fill in the required information.
 
 > Note: If you are not comfortable with creating OPENAI_API_KEY, please reach out to me at [zinedkaloc](https://twitter.com/zinedkaloc) and I will be happy to help you.
