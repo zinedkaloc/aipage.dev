@@ -12,7 +12,7 @@ enum DeviceSize {
 }
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+  const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat();
 
   const [iframeContent, setIframeContent] = useState("");
@@ -23,6 +23,7 @@ export default function Chat() {
   const [editedContent, setEditedContent] = useState<string>("");
   const [editingMode, setEditingMode] = useState(false);
   const [codeViewActive, setCodeViewActive] = useState(false);
+  const [isStopped, setIsStopped] = useState(false);
 
   const appendToIframe = (content: any) => {
     if (iframeRef.current) {
@@ -169,6 +170,11 @@ export default function Chat() {
     }
   };
 
+  const handleStop = () => {
+    stop()
+    setIsStopped(true)
+  }
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
       <header className="w-full px-6 py-4 absolute top-0">
@@ -241,9 +247,8 @@ export default function Chat() {
           className="mb-4 w-full sm:w-11/12 md:w-[800px] mx-auto"
         >
           <input
-            className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
-              isLoading ? "rounded-xl" : "shadow-sm"
-            }`}
+            className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${isLoading ? "rounded-xl" : "shadow-sm"
+              }`}
             value={input}
             // update placeholder when the GPT is typing
             placeholder={isLoading ? "Generating... " : "Say something..."}
@@ -256,6 +261,14 @@ export default function Chat() {
             </p>
           )}
         </form>
+        <div className="flex space-x-4 my-3">
+          <button className={`bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded ${isLoading ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={handleStop}>
+            Stop Generating
+          </button>
+          <button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded ${isStopped ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={() => { setIframeContent(""); setIsStopped(false) }}>
+            Clear view
+          </button>
+        </div>
       </div>
 
       {editingMode && selectedElement && (
