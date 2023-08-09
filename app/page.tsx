@@ -261,14 +261,6 @@ export default function Chat() {
             </p>
           )}
         </form>
-        <div className="flex space-x-4 my-3">
-          <button className={`bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded ${isLoading ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={handleStop}>
-            Stop Generating
-          </button>
-          <button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded ${isStopped ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={() => { setIframeContent(""); setIsStopped(false) }}>
-            Clear view
-          </button>
-        </div>
       </div>
 
       {editingMode && selectedElement && (
@@ -318,6 +310,17 @@ export default function Chat() {
                   >
                     {codeViewActive ? "🖼️" : "🖨️"}
                   </button>
+                  {/* Clear and Stop buttons */}
+                  <button className={`${isLoading ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={handleStop}>
+                    <span role="img" aria-label="paper-plane">
+                      🛑
+                    </span>
+                  </button>
+                  <button className={`${isStopped ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={() => { setIframeContent(""); setIsStopped(false) }}>
+                    <span role="img" aria-label="paper-plane">
+                      🧽
+                    </span>
+                  </button>
                 </div>
               </div>
               <div></div>
@@ -327,7 +330,6 @@ export default function Chat() {
                     📩
                   </span>
                 </button>
-
                 {!isLoading && iframeContent && (
                   <button onClick={handleEdit} className="ml-4">
                     {editingMode ? "💾" : "✏️"}
