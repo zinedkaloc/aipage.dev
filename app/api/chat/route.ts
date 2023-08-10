@@ -36,8 +36,7 @@ export async function POST(req: Request) {
     if (!result.success) {
       const fakeStream =
         "Too many requests in 1 day. Please try again in a 24 hours. Thank you. 🙏";
-      const stream = OpenAIStream(fakeStream);
-      return new StreamingTextResponse(stream, {
+      return new Response(fakeStream, {
         status: 429,
         headers: {
           "X-RateLimit-Limit": result.limit,
