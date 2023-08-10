@@ -34,16 +34,16 @@ export async function POST(req: Request) {
     const result = await ratelimit.limit(ipIdentifier ?? "");
 
     if (!result.success) {
-      return new StreamingTextResponse(
-        "Too many requests in 1 day. Please try again in a 24 hours. Thank you. 🙏",
-        {
-          status: 429,
-          headers: {
-            "X-RateLimit-Limit": result.limit,
-            "X-RateLimit-Remaining": result.remaining,
-          } as any,
-        }
-      );
+      const fakeStream =
+        "Too many requests in 1 day. Please try again in a 24 hours. Thank you. 🙏";
+      const stream = OpenAIStream(fakeStream);
+      return new StreamingTextResponse(stream, {
+        status: 429,
+        headers: {
+          "X-RateLimit-Limit": result.limit,
+          "X-RateLimit-Remaining": result.remaining,
+        } as any,
+      });
     }
   }
   // END
