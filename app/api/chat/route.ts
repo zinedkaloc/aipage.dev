@@ -49,6 +49,19 @@ export async function POST(req: Request) {
 
   const { messages } = await req.json();
 
+  // Implemented for to test the API
+
+  const abc = await fetch(
+    "https://c3-na.altogic.com/e:64d52ccfc66bd54b97bdd78a/messages",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: messages[0].content }),
+    }
+  );
+
   const systemPrompt = `You are a talented UI designer who needs help creating a clear and concise HTML UI using Tailwind CSS. The UI should be visually appealing and responsive. Please design a UI component that includes the following elements:
 
 1. A header Section: Include a logo and a navigation menu.
