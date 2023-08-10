@@ -94,5 +94,6 @@ Remember to keep the design minimalistic, intuitive, and visually appealing. You
     // Continue generating the response if incomplete
   } while (!stream.cancel);
 
+  // If rate limited, return a fake response
   return new StreamingTextResponse(stream);
 }
