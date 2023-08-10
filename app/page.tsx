@@ -171,9 +171,9 @@ export default function Chat() {
   };
 
   const handleStop = () => {
-    stop()
-    setIsStopped(true)
-  }
+    stop();
+    setIsStopped(true);
+  };
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
@@ -247,8 +247,9 @@ export default function Chat() {
           className="mb-4 w-full sm:w-11/12 md:w-[800px] mx-auto"
         >
           <input
-            className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${isLoading ? "rounded-xl" : "shadow-sm"
-              }`}
+            className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
+              isLoading ? "rounded-xl" : "shadow-sm"
+            }`}
             value={input}
             // update placeholder when the GPT is typing
             placeholder={isLoading ? "Generating... " : "Say something..."}
@@ -311,12 +312,25 @@ export default function Chat() {
                     {codeViewActive ? "🖼️" : "🖨️"}
                   </button>
                   {/* Clear and Stop buttons */}
-                  <button className={`${isLoading ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={handleStop}>
+                  <button
+                    className={`${
+                      isLoading ? "" : "opacity-50 cursor-not-allowed"
+                    }`}
+                    onClick={handleStop}
+                  >
                     <span role="img" aria-label="paper-plane">
                       🛑
                     </span>
                   </button>
-                  <button className={`${isStopped ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={() => { setIframeContent(""); setIsStopped(false) }}>
+                  <button
+                    className={`${
+                      isStopped ? "" : "opacity-50 cursor-not-allowed"
+                    }`}
+                    onClick={() => {
+                      setIframeContent("");
+                      setIsStopped(false);
+                    }}
+                  >
                     <span role="img" aria-label="paper-plane">
                       🧽
                     </span>

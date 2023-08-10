@@ -1,5 +1,20 @@
 import { Configuration, OpenAIApi } from "openai-edge";
+import { Ratelimit } from "@upstash/ratelimit";
+import redis from "../../../utils/redis";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { headers } from "next/headers";
+
+// REMOVE THIS IF YOU DON'T WANT RATE LIMITING
+// START
+const ratelimit = redis
+  ? new Ratelimit({
+      redis: redis,
+      limiter: Ratelimit.fixedWindow(10, "1440 m"),
+      analytics: true,
+    })
+  : undefined;
+
+// END
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -10,6 +25,29 @@ const openai = new OpenAIApi(config);
 export const runtime = "edge";
 
 export async function POST(req: Request) {
+  // REMOVE THIS IF YOU DON'T WANT RATE LIMITING
+  // START
+  if (ratelimit) {
+    const headersList = headers();
+    const ipIdentifier = headersList.get("x-real-ip");
+
+    const result = await ratelimit.limit(ipIdentifier ?? "");
+
+    if (!result.success) {
+      return new StreamingTextResponse(
+        "Too many requests in 1 day. Please try again in a 24 hours. Thank you. 🙏",
+        {
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": result.limit,
+            "X-RateLimit-Remaining": result.remaining,
+          } as any,
+        }
+      );
+    }
+  }
+  // END
+
   const { messages } = await req.json();
 
   const systemPrompt = `You are a talented UI designer who needs help creating a clear and concise HTML UI using Tailwind CSS. The UI should be visually appealing and responsive. Please design a UI component that includes the following elements:
