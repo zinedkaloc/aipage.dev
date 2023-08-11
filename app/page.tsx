@@ -4,6 +4,7 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import Frame from "react-frame-component";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import html2canvas from "html2canvas";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -16,6 +17,8 @@ export default function Chat() {
     useChat();
 
   const [iframeContent, setIframeContent] = useState("");
+  const [imageSrc, setImageSrc] = useState<string>("");
+
   const [deviceSize, setDeviceSize] = useState(DeviceSize.Desktop);
   const iframeRef = useRef(null);
   const [fileName, setFileName] = useState("");
@@ -47,6 +50,20 @@ export default function Chat() {
         requestAnimationFrame(() => {
           iframeDocument.body.appendChild(newNode);
         });
+      }
+    }
+  };
+
+  const captureIframeContent = async () => {
+    if (iframeRef.current) {
+      const iframeDocument = (iframeRef.current as HTMLIFrameElement)
+        .contentDocument;
+      if (iframeDocument) {
+        const canvas = await html2canvas(iframeDocument.body);
+        const imgURL = canvas.toDataURL();
+        // You can use imgURL as the src for an image tag to display the image representation of the iframe content
+        // For simplicity, let's just set it to a state variable
+        setImageSrc(imgURL);
       }
     }
   };
@@ -203,6 +220,27 @@ export default function Chat() {
           </a>
         </div>
       </header>
+      <section>
+        <div className="fixed bottom-16 right-6 cursor-pointer transition-colors group">
+          <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute right-8 bottom-4 transform translate-y-2 w-64">
+            Help spread the word! 📢 Post a tweet of your creation on Twitter
+            and tag @aipagedev for early access to our exclusive beta—packed
+            with stunning features. 🚀
+          </div>
+          <a
+            onClick={captureIframeContent} // Capture the iframe content before sharing
+            href={`https://twitter.com/intent/tweet?text=Just used AI to craft an EPIC landing page in minutes with AIpage.dev ! 🤖 This is the future of web design! Check it out 👉 @aipagedev`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-2xl animate-blink"
+          >
+            🐦 {/* You can replace this with a Twitter SVG or icon */}
+          </a>
+        </div>
+      </section>
+
+      {/* Display the image if imageSrc is set */}
+
       <section>
         <div className="fixed bottom-6 right-6 cursor-pointer transition-colors group">
           <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute  right-8 bottom-4 transform translate-y-2 w-48">

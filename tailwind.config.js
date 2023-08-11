@@ -12,8 +12,12 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+
       outline: {
         blue: "2px solid #007BFF",
+      },
+      animation: {
+        blink: "blink 1s infinite",
       },
     },
   },
