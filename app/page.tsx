@@ -307,9 +307,13 @@ export default function Chat() {
             }`}
             value={input}
             // update placeholder when the GPT is typing
-            placeholder={isLoading ? "Generating... " : "Say something..."}
+            placeholder={
+              isLoading
+                ? "Generating... "
+                : "Enjoy the weekend! Get out and have some fun! We'll be back!"
+            }
             onChange={handleInputChange}
-            disabled={isLoading}
+            disabled={!isLoading}
           />
           {isLoading ? null : (
             <p className="text-xs ml-4 font-medium text-gray-500">
