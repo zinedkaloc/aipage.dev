@@ -322,57 +322,62 @@ export default function Chat() {
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
               <div className="flex-1 text-center">
-                <div className="flex items-center justify-center space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
-                  acme.co
-                  {isLoading && <span className="ml-4 animate-spin">🟠</span>}
-                  <button
-                    className="ml-4 hidden md:flex"
-                    onClick={() => setDeviceSize(DeviceSize.Mobile)}
-                  >
-                    📱
-                  </button>
-                  <button
-                    className="ml-4 hidden md:flex"
-                    onClick={() => setDeviceSize(DeviceSize.Tablet)}
-                  >
-                    💻
-                  </button>
-                  <button
-                    className="ml-4 hidden md:flex"
-                    onClick={() => setDeviceSize(DeviceSize.Desktop)}
-                  >
-                    🖥️
-                  </button>
-                  <button
-                    className="ml-4"
-                    onClick={() => setCodeViewActive(!codeViewActive)}
-                  >
-                    {codeViewActive ? "🖼️" : "🖨️"}
-                  </button>
+                <div className="flex items-center justify-between space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
+                  <div className="flex items-center w-3 h-3"></div>
+                  <div className="flex items-center space-x-2">
+                    acme.co
+                    {isLoading && <span className="ml-4 animate-spin">🟠</span>}
+                    <button
+                      className="ml-4 hidden md:flex"
+                      onClick={() => setDeviceSize(DeviceSize.Mobile)}
+                    >
+                      📱
+                    </button>
+                    <button
+                      className=" hidden md:flex"
+                      onClick={() => setDeviceSize(DeviceSize.Tablet)}
+                    >
+                      💻
+                    </button>
+                    <button
+                      className=" hidden md:flex"
+                      onClick={() => setDeviceSize(DeviceSize.Desktop)}
+                    >
+                      🖥️
+                    </button>
+                    <button
+                      className=""
+                      onClick={() => setCodeViewActive(!codeViewActive)}
+                    >
+                      {codeViewActive ? "🖼️" : "🖨️"}
+                    </button>
+                  </div>
                   {/* Clear and Stop buttons */}
-                  <button
-                    className={`${
-                      isLoading ? "" : "opacity-50 cursor-not-allowed"
-                    }`}
-                    onClick={handleStop}
-                  >
-                    <span role="img" aria-label="paper-plane">
-                      🛑
-                    </span>
-                  </button>
-                  <button
-                    className={`${
-                      isStopped ? "" : "opacity-50 cursor-not-allowed"
-                    }`}
-                    onClick={() => {
-                      setIframeContent("");
-                      setIsStopped(false);
-                    }}
-                  >
-                    <span role="img" aria-label="paper-plane">
-                      🧽
-                    </span>
-                  </button>
+                  <div className="flex items-center space-x-4">
+                    <button
+                      className={`${
+                        isLoading ? "" : "opacity-70 cursor-not-allowed"
+                      }`}
+                      onClick={handleStop}
+                    >
+                      <span role="img" aria-label="stop">
+                        🟥
+                      </span>
+                    </button>
+                    <button
+                      className={`${
+                        isStopped ? "" : "opacity-70 cursor-not-allowed"
+                      }`}
+                      onClick={() => {
+                        setIframeContent("");
+                        setIsStopped(false);
+                      }}
+                    >
+                      <span role="img" aria-label="clear">
+                        🧽
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
               <div></div>
