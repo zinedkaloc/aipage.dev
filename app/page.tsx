@@ -205,7 +205,7 @@ export default function Chat() {
             </div>
             <div className="text-sm font-medium">
               Due to the high demand, we are undergoing maintenance until
-              Monday. Stay updated on the status through our Twitter account:
+              Monday. Stay updated on the status through 👉
               <a href="https://twitter.com/aipagedev" className="ml-1">
                 @aipagedev
               </a>
