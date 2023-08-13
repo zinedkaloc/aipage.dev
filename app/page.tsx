@@ -195,23 +195,6 @@ export default function Chat() {
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
       <header className="w-full px-6 py-4 absolute top-0">
-        <div
-          className="bg-gradient-to-b from-yellow-300 via-yellow-500 to-yellow-300
-         flex items-center justify-between px-4 py-2 rounded-lg shadow-lg mb-2"
-        >
-          <div className="flex items-center">
-            <div className=" mr-2">
-              <span className="text-2xl font-bold">🚧</span>
-            </div>
-            <div className="text-sm font-medium">
-              Due to the high demand, we are undergoing maintenance until
-              Monday. Stay updated on the status through 👉
-              <a href="https://twitter.com/aipagedev" className="ml-1">
-                @aipagedev
-              </a>
-            </div>
-          </div>
-        </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center tracking-tight">
             <strong className="font-bold text-xl">ai</strong>
@@ -307,13 +290,9 @@ export default function Chat() {
             }`}
             value={input}
             // update placeholder when the GPT is typing
-            placeholder={
-              isLoading
-                ? "Generating... "
-                : "Enjoy the weekend! Get out and have some fun! We'll be back!"
-            }
+            placeholder={isLoading ? "Generating... " : "Say something..."}
             onChange={handleInputChange}
-            disabled={!isLoading}
+            disabled={isLoading}
           />
           {isLoading ? null : (
             <p className="text-xs ml-4 font-medium text-gray-500">
