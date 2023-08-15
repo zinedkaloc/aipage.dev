@@ -6,9 +6,9 @@ We welcome and appreciate contributions from the community! By contributing to t
 
 There are several ways you can contribute to this project:
 
-- Report bugs: If you come across any issues or bugs, please [open a new issue](https://github.com/zinedkaloc/ai-pge/issues) and provide as much detail as possible.
+- Report bugs: If you come across any issues or bugs, please [open a new issue](https://github.com/zinedkaloc/ai-page/issues) and provide as much detail as possible.
 
-- Suggest new features: Have an idea for a new feature or improvement? We'd love to hear it! [Open a new issue](https://github.com/zinedkaloc/ai-pge/issues) and let us know.
+- Suggest new features: Have an idea for a new feature or improvement? We'd love to hear it! [Open a new issue](https://github.com/zinedkaloc/ai-page/issues) and let us know.
 
 - Submit pull requests: If you have code changes or enhancements you'd like to contribute, you can do so by opening a pull request. Make sure to follow the guidelines below when submitting your pull request.
 
