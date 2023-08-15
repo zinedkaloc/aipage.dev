@@ -36,47 +36,6 @@ const TweetButton = () => {
 
   return (
     <>
-      <Head>
-        <title>AIpage.dev - AI-powered landing page builder</title>
-        <meta
-          name="title"
-          content="AIpage.dev - AI-powered landing page builder"
-        />
-        <meta
-          property="og:image"
-          content={`${process.env.NEXT_PUBLIC_DOMAIN}/og?text=${tweet}`}
-        />
-        <meta
-          name="description"
-          content="AIpage.dev is an AI-powered landing page builder that helps you create stunning landing pages in minutes. No coding required."
-        />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://aipage.dev/" />
-        <meta
-          property="og:title"
-          content="AIpage.dev - AI-powered landing page builder"
-        />
-        <meta
-          property="og:description"
-          content="AIpage.dev is an AI-powered landing page builder that helps you create stunning landing pages in minutes. No coding required."
-        />
-
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://aipage.dev/" />
-        <meta
-          property="twitter:title"
-          content="AIpage.dev - AI-powered landing page builder"
-        />
-        <meta
-          property="twitter:description"
-          content="AIpage.dev is an AI-powered landing page builder that helps you create stunning landing pages in minutes. No coding required."
-        />
-        <meta
-          property="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_DOMAIN}/og?text=${tweet}`}
-        />
-      </Head>
       <a
         onClick={handleClick}
         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
