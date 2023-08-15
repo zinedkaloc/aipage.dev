@@ -5,6 +5,7 @@ import Frame from "react-frame-component";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import html2canvas from "html2canvas";
+import TweetButton from "@/components/tweetButton";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -227,15 +228,7 @@ export default function Chat() {
             and tag @aipagedev for early access to our exclusive beta—packed
             with stunning features. 🚀
           </div>
-          <a
-            onClick={captureIframeContent} // Capture the iframe content before sharing
-            href={`https://twitter.com/intent/tweet?text=Just used AI to craft an EPIC landing page in minutes with AIpage.dev ! 🤖 This is the future of web design! Check it out 👉 @aipagedev`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-2xl animate-blink"
-          >
-            🐦 {/* You can replace this with a Twitter SVG or icon */}
-          </a>
+          <TweetButton />
         </div>
       </section>
 

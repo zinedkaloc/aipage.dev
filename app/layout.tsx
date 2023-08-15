@@ -11,6 +11,9 @@ export const metadata = {
     title: "AIPage.dev - An AI-Powered Landing Page Generator | by @zinedkaloc",
     description:
       "AI-Powered Landing Page Generator. Experience the Open Source Project that Empowers You to Build Stunning Landing Pages Instantly",
+    type: "website",
+    url: "https://aipage.dev",
+    image: "https://aipage.dev/og-image.png",
   },
 };
 
