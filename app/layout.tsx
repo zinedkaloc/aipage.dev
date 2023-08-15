@@ -1,7 +1,13 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Metadata } from "next";
-
+import { cookies } from "next/headers";
+import AuthModal from "@/components/AuthModal";
+import altogic from "@/utils/altogic";
+import { AuthProvider } from "@/context/AuthContext";
+import { ReactNode } from "react";
+import { User } from "@/types";
+import { fetchAuthUser } from "@/utils/auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,14 +24,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
+  const user = await fetchAuthUser();
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <AuthProvider user={user}>
+      <html lang="en">
+        <body className={inter.className}>
+          {children}
+          <AuthModal />
+        </body>
+      </html>
+    </AuthProvider>
   );
 }
