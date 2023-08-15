@@ -26,3 +26,48 @@
 .blinking {
   animation: blink 1s infinite;
 }
+
+body:has(.modal) {
+    overflow: hidden;
+}
+
+.auth-btn {
+  @apply relative overflow-hidden;
+}
+
+.auth-btn::before {
+  -webkit-animation: authBtnAnimation 3.5s;
+  animation: authBtnAnimation 3.5s;
+  -webkit-animation-delay: 1.8s;
+  animation-delay: 1.8s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+  background: linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,.18) 25%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.18) 75%,rgba(255,255,255,0));
+  content: "";
+  display: block;
+  height: 90px;
+  left: -60%;
+  position: absolute;
+  top: -150px;
+  transform: rotate(-25deg);
+  width: 200px
+}
+
+@keyframes authBtnAnimation {
+  0% {
+    left: -100%;
+    top: -150px
+  }
+
+  50% {
+    left: 100%;
+    top: 150px
+  }
+
+  to {
+    left: 100%;
+    top: 150px
+  }
+}

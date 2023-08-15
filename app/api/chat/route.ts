@@ -2,7 +2,8 @@ import { Configuration, OpenAIApi } from "openai-edge";
 import { Ratelimit } from "@upstash/ratelimit";
 import redis from "../../../utils/redis";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 // REMOVE THIS IF YOU DON'T WANT RATE LIMITING
 // START
@@ -25,6 +26,7 @@ const openai = new OpenAIApi(config);
 export const runtime = "edge";
 
 export async function POST(req: Request) {
+  const cookieStore = cookies();
   // REMOVE THIS IF YOU DON'T WANT RATE LIMITING
   // START
   if (ratelimit) {
@@ -51,16 +53,25 @@ export async function POST(req: Request) {
 
   // Implemented for to test the API
 
-  const abc = await fetch(
-    "https://c3-na.altogic.com/e:64d52ccfc66bd54b97bdd78a/messages",
+  const sessionToken = cookieStore.get("sessionToken")?.value as string;
+
+  const storeMessage = await fetch(
+    "https://c3-na.altogic.com/e:64d52ccfc66bd54b97bdd78a/test",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Session: sessionToken,
       },
       body: JSON.stringify({ content: messages[0].content }),
-    }
+    },
   );
+
+  const { credits } = await storeMessage.json();
+
+  if (credits === 0) {
+    return NextResponse.json({ code: "no-credits", credits });
+  }
 
   const systemPrompt = `You are a talented UI designer who needs help creating a clear and concise HTML UI using Tailwind CSS. The UI should be visually appealing and responsive. Please design a UI component that includes the following elements:
 

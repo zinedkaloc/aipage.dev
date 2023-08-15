@@ -6,6 +6,9 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import html2canvas from "html2canvas";
 import TweetButton from "@/components/tweetButton";
+import Header from "@/components/Header";
+import { useAuth } from "@/context/AuthContext";
+import useSearchParams from "@/hooks/useSearchParams";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -14,8 +17,28 @@ enum DeviceSize {
 }
 
 export default function Chat() {
+  const { user, setUser } = useAuth();
+  const [hasNoCreditsError, setHasNoCreditsError] = useState(false);
+
+  const { set } = useSearchParams();
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
-    useChat();
+    useChat({
+      onResponse: (message) => {
+        setHasNoCreditsError(false);
+        if (user?.credits) user.credits--;
+        setUser(user);
+      },
+      onFinish: (message) => {
+        try {
+          const res = JSON.parse(message.content) as { credits: number };
+          if (user?.credits) user.credits = res.credits;
+          setUser(user);
+          setHasNoCreditsError(true);
+        } catch {
+          console.log("no json");
+        }
+      },
+    });
 
   const [iframeContent, setIframeContent] = useState("");
   const [imageSrc, setImageSrc] = useState<string>("");
@@ -68,6 +91,10 @@ export default function Chat() {
       }
     }
   };
+
+  useEffect(() => {
+    console.log("iframeRef", iframeRef.current);
+  }, [iframeRef]);
 
   useEffect(() => {
     const stream = new EventSource("/api/chat");
@@ -188,6 +215,12 @@ export default function Chat() {
     }
   };
 
+  function onFocusHandler() {
+    if (!user) {
+      set("auth", "true");
+    }
+  }
+
   const handleStop = () => {
     stop();
     setIsStopped(true);
@@ -195,32 +228,7 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
-      <header className="w-full px-6 py-4 absolute top-0">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center tracking-tight">
-            <strong className="font-bold text-xl">ai</strong>
-            <span className="text-xl">page.dev</span>
-          </div>
-          <a
-            href="https://twitter.com/aipagedev"
-            className="flex items-center text-gray-900 hover:text-blue-500 transition-colors"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <svg
-              className="mr-1 h-5 w-5 fill-current"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-            </svg>
-          </a>
-        </div>
-      </header>
+      <Header />
       <section>
         <div className="fixed bottom-16 right-6 cursor-pointer transition-colors group">
           <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute right-8 bottom-4 transform translate-y-2 w-64">
@@ -254,7 +262,7 @@ export default function Chat() {
         <div className="relative py-6 flex flex-col justify-center">
           <Image
             src="/logoa.png"
-            alt="A logo"
+            alt="AIPage.dev logo"
             width={200}
             height={200}
             className="mx-auto h-32 w-32"
@@ -285,6 +293,7 @@ export default function Chat() {
             // update placeholder when the GPT is typing
             placeholder={isLoading ? "Generating... " : "Say something..."}
             onChange={handleInputChange}
+            onFocus={onFocusHandler}
             disabled={isLoading}
           />
           {isLoading ? null : (
@@ -305,103 +314,134 @@ export default function Chat() {
           <button onClick={handleUpdate}>Update</button>
         </div>
       )}
-      {iframeContent && (
-        <div className="flex flex-col items-center h-2/3 w-full">
-          <div className={`border rounded-xl ${deviceSize}`}>
-            <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              </div>
-              <div className="flex-1 text-center">
-                <div className="flex items-center justify-between space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
-                  <div className="flex items-center w-3 h-3"></div>
-                  <div className="flex items-center space-x-2">
-                    acme.co
-                    {isLoading && <span className="ml-4 animate-spin">🟠</span>}
-                    <button
-                      className="ml-4 hidden md:flex"
-                      onClick={() => setDeviceSize(DeviceSize.Mobile)}
-                    >
-                      📱
-                    </button>
-                    <button
-                      className=" hidden md:flex"
-                      onClick={() => setDeviceSize(DeviceSize.Tablet)}
-                    >
-                      💻
-                    </button>
-                    <button
-                      className=" hidden md:flex"
-                      onClick={() => setDeviceSize(DeviceSize.Desktop)}
-                    >
-                      🖥️
-                    </button>
-                    <button
-                      className=""
-                      onClick={() => setCodeViewActive(!codeViewActive)}
-                    >
-                      {codeViewActive ? "🖼️" : "🖨️"}
-                    </button>
-                  </div>
-                  {/* Clear and Stop buttons */}
-                  <div className="flex items-center space-x-4">
-                    <button
-                      className={`${
-                        isLoading ? "" : "opacity-70 cursor-not-allowed"
-                      }`}
-                      onClick={handleStop}
-                    >
-                      <span role="img" aria-label="stop">
-                        🟥
-                      </span>
-                    </button>
-                    <button
-                      className={`${
-                        isStopped ? "" : "opacity-70 cursor-not-allowed"
-                      }`}
-                      onClick={() => {
-                        setIframeContent("");
-                        setIsStopped(false);
-                      }}
-                    >
-                      <span role="img" aria-label="clear">
-                        🧽
-                      </span>
-                    </button>
+
+      {hasNoCreditsError ? (
+        <div className="flex flex-col items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100"
+            height="100"
+            viewBox="0 0 100 100"
+          >
+            <polygon points="50,15 85,85 15,85" fill="#FF6B6B" />
+            <text
+              x="50"
+              y="75"
+              fontSize="40"
+              fontWeight="bold"
+              textAnchor="middle"
+              fill="#FFFFFF"
+            >
+              !
+            </text>
+          </svg>
+          <h1 className="text-3xl text-gray-800 mb-2">No Credits</h1>
+          <p className="text-gray-600 mb-6">
+            You do not have enough credits to proceed with this request today.
+            Please try again tomorrow.
+          </p>
+        </div>
+      ) : (
+        iframeContent && (
+          <div className="flex flex-col items-center h-2/3 w-full">
+            <div className={`border rounded-xl ${deviceSize}`}>
+              <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <div className="flex-1 text-center">
+                  <div className="flex items-center justify-between space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
+                    <div className="flex items-center w-3 h-3"></div>
+                    <div className="flex items-center space-x-2">
+                      acme.co
+                      {isLoading && (
+                        <span className="ml-4 animate-spin">🟠</span>
+                      )}
+                      <button
+                        className="ml-4 hidden md:flex"
+                        onClick={() => setDeviceSize(DeviceSize.Mobile)}
+                      >
+                        📱
+                      </button>
+                      <button
+                        className=" hidden md:flex"
+                        onClick={() => setDeviceSize(DeviceSize.Tablet)}
+                      >
+                        💻
+                      </button>
+                      <button
+                        className=" hidden md:flex"
+                        onClick={() => setDeviceSize(DeviceSize.Desktop)}
+                      >
+                        🖥️
+                      </button>
+                      <button
+                        className=""
+                        onClick={() => setCodeViewActive(!codeViewActive)}
+                      >
+                        {codeViewActive ? "🖼️" : "🖨️"}
+                      </button>
+                    </div>
+                    {/* Clear and Stop buttons */}
+                    <div className="flex items-center space-x-4">
+                      <button
+                        className={`${
+                          isLoading ? "" : "opacity-70 cursor-not-allowed"
+                        }`}
+                        onClick={handleStop}
+                      >
+                        <span role="img" aria-label="stop">
+                          🟥
+                        </span>
+                      </button>
+                      <button
+                        className={`${
+                          isStopped ? "" : "opacity-70 cursor-not-allowed"
+                        }`}
+                        onClick={() => {
+                          setIframeContent("");
+                          setIsStopped(false);
+                        }}
+                      >
+                        <span role="img" aria-label="clear">
+                          🧽
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div></div>
-              <div className="flex justify-end space-x-4">
-                <button onClick={handleSave}>
-                  <span role="img" aria-label="paper-plane">
-                    📩
-                  </span>
-                </button>
-                {!isLoading && iframeContent && (
-                  <button onClick={handleEdit} className="ml-4">
-                    {editingMode ? "💾" : "✏️"}
+                <div></div>
+                <div className="flex justify-end space-x-4">
+                  <button onClick={handleSave}>
+                    <span role="img" aria-label="paper-plane">
+                      📩
+                    </span>
                   </button>
-                )}
+                  {!isLoading && iframeContent && (
+                    <button onClick={handleEdit} className="ml-4">
+                      {editingMode ? "💾" : "✏️"}
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="h-[96rem]">
-              <Frame
-                ref={iframeRef}
-                sandbox="allow-same-origin allow-scripts"
-                style={{ width: "100%", height: "100%" }}
-              >
-                {codeViewActive ? (
-                  <pre>{iframeContent}</pre>
-                ) : (
-                  <div dangerouslySetInnerHTML={{ __html: iframeContent }} />
-                )}
-              </Frame>
+              <div className="h-[96rem]">
+                <Frame
+                  ref={iframeRef}
+                  sandbox="allow-same-origin allow-scripts"
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  {codeViewActive ? (
+                    <pre>{iframeContent}</pre>
+                  ) : (
+                    <div dangerouslySetInnerHTML={{ __html: iframeContent }} />
+                  )}
+                </Frame>
+              </div>
             </div>
           </div>
-        </div>
+        )
       )}
     </div>
   );
