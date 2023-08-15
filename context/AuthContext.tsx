@@ -13,8 +13,9 @@ export const AuthContext = createContext<AuthContext>({
   setUser: () => {},
 });
 
-interface AuthProviderProps extends AuthContext {
+interface AuthProviderProps {
   children: ReactNode;
+  user: User | null;
 }
 
 export const AuthProvider = ({ user, children }: AuthProviderProps) => {
@@ -25,7 +26,7 @@ export const AuthProvider = ({ user, children }: AuthProviderProps) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser: setAuthUser }}>
+    <AuthContext.Provider value={{ user: _user, setUser: setAuthUser }}>
       {children}
     </AuthContext.Provider>
   );
