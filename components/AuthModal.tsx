@@ -7,6 +7,7 @@ import useSearchParams from "@/hooks/useSearchParams";
 import Image from "next/image";
 import LoadingIcon from "@/components/LoadingIcon";
 import { XIcon } from "lucide-react";
+import LoadingSpinner from "./loadingSpinner";
 
 export default function AuthModal() {
   const { deleteByKey, has } = useSearchParams();
@@ -23,14 +24,14 @@ export default function AuthModal() {
     {
       name: "Google",
       className:
-        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-black bg-black text-white active:hover:bg-white active:hover:text-black disabled:opacity-70 disabled:cursor-not-allowed",
+        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-black bg-black text-white active:bg-white hover:bg-white active:text-black hover:text-black disabled:opacity-50 disabled:cursor-not-allowed",
       icon: GoogleIcon,
       handler: () => altogic.auth.signInWithProvider("google"),
     },
     {
       name: "Github",
       className:
-        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-gray-200 bg-white text-gray-500 active:hover:border-black active:hover:text-black disabled:opacity-70 disabled:cursor-not-allowed",
+        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-gray-200 bg-white text-gray-500 active:border-black hover:border-black active:text-black hover:text-black disabled:opacity-50 disabled:cursor-not-allowed",
       icon: GithubIcon,
       handler: () => altogic.auth.signInWithProvider("github"),
     },
@@ -84,7 +85,7 @@ export default function AuthModal() {
               }}
             >
               {index === selected ? (
-                <LoadingIcon className="h-8 w-8" />
+                <LoadingSpinner className="h-4 w-4" />
               ) : (
                 <method.icon />
               )}
