@@ -48,7 +48,6 @@ export async function GET(request: Request) {
           letterSpacing: -2,
           fontWeight: 700,
           textAlign: "center",
-          margin: "0 75px",
         }}
       >
         <div
@@ -162,7 +161,6 @@ export async function GET(request: Request) {
               color: "white",
               width: "70%",
               paddingTop: "24px",
-              margin: "0 75px",
               textAlign: "center",
               WebkitBackgroundClip: "text",
             }}
