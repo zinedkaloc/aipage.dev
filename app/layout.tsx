@@ -14,7 +14,9 @@ export const metadata: Metadata = {
       "AI-Powered Landing Page Generator. Experience the Open Source Project that Empowers You to Build Stunning Landing Pages Instantly",
     type: "website",
     url: "https://aipage.dev",
-    images: `${process.env.NEXT_PUBLIC_DOMAIN}/og`,
+    images: `${process.env.NEXT_PUBLIC_DOMAIN}/og?text=${new Date()
+      .getTime()
+      .toString()}`,
   },
 };
 

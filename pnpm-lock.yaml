@@ -8,14 +8,14 @@ specifiers:
   '@types/react-resizable': ^3.0.4
   '@upstash/ratelimit': ^0.4.3
   '@upstash/redis': ^1.22.0
-  ai: ^2.1.7
+  ai: ^2.1.34
   autoprefixer: ^10.4.14
   eslint: ^7.32.0
   eslint-config-next: 13.4.4-canary.11
   html2canvas: ^1.4.1
   monaco-editor: ^0.40.0
   next: 13.4.4-canary.11
-  openai-edge: ^0.5.1
+  openai-edge: ^1.2.2
   postcss: ^8.4.23
   re-resizable: ^6.9.9
   react: 18.2.0
@@ -30,11 +30,11 @@ specifiers:
 dependencies:
   '@upstash/ratelimit': 0.4.3
   '@upstash/redis': 1.22.0
-  ai: 2.1.32_react@18.2.0
+  ai: 2.1.34_react@18.2.0
   html2canvas: 1.4.1
   monaco-editor: 0.40.0
   next: 13.4.4-canary.11_biqbaboplfbrettd7655fr4n2y
-  openai-edge: 0.5.1
+  openai-edge: 1.2.2
   re-resizable: 6.9.10_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -576,8 +576,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ai/2.1.32_react@18.2.0:
-    resolution: {integrity: sha512-G+mk7OfSxVR5s2cmpni89olZjXo5XbxPzzG8DAZThoJA2725hczfvO/gqLYGUToq92vzr0XgCHP6JJFK9so5fg==}
+  /ai/2.1.34_react@18.2.0:
+    resolution: {integrity: sha512-gZawUnYhZHJ1PiE+x7iDuy2GQg67AKs0uHgdS8Jw3o/3NouGeJ/5ytyqbgHqczgvoquSpykumR+5TyRieF8x/w==}
     engines: {node: '>=14.6'}
     peerDependencies:
       react: ^18.2.0
@@ -2265,9 +2265,9 @@ packages:
       wrappy: 1.0.2
     dev: true
 
-  /openai-edge/0.5.1:
-    resolution: {integrity: sha512-/Q/b9wkPKWIzcnsp2o0Of5QW/t4A0XLw+E7rjVSYR3gLVt+pWpFuWCgWPWUVS1UrrLJPvzmndwe1JMpfqLRJIQ==}
-    engines: {node: '>=12'}
+  /openai-edge/1.2.2:
+    resolution: {integrity: sha512-C3/Ao9Hkx5uBPv9YFBpX/x59XMPgPUU4dyGg/0J2sOJ7O9D98kD+lfdOc7v/60oYo5xzMGct80uFkYLH+X2qgw==}
+    engines: {node: '>=18'}
     dev: false
 
   /optionator/0.9.3:
