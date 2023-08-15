@@ -78,7 +78,8 @@ export default function AuthModal() {
             <button
               key={method.name}
               className={method.className}
-              disabled={!!(selected && selected !== index)}
+              // this is a hack to prevent the button from being clicked twice
+              disabled={selected !== undefined}
               onClick={() => {
                 setSelected(index);
                 method.handler();
