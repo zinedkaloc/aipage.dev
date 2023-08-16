@@ -17,7 +17,7 @@ export default function Product({ product, className }: ProductProps) {
   const { set } = useSearchParams();
 
   async function getPaymentLink(priceId: string) {
-    if (!user) return set("auth", "true");
+    if (!user) return set("authModal", "true");
 
     try {
       setLoading(true);
@@ -37,7 +37,7 @@ export default function Product({ product, className }: ProductProps) {
     <div
       className={cn(
         "border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200",
-        className,
+        className
       )}
     >
       <div className="flex h-72 gap-5 flex-col">
