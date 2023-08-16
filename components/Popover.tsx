@@ -16,7 +16,7 @@ export default function Popover({
       <PopoverPrimitive.Content
         sideOffset={8}
         align={align}
-        className="z-50 hidden animate-slide-up-fade items-center rounded-md border border-gray-200 bg-white drop-shadow-lg md:block"
+        className="z-50 animate-slide-up-fade items-center rounded-md border border-gray-200 bg-white drop-shadow-lg block"
       >
         {content}
       </PopoverPrimitive.Content>

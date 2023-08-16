@@ -213,7 +213,7 @@ export default function Chat() {
 
   function onFocusHandler() {
     if (!user) {
-      set("auth", "true");
+      set("authModal", "true");
     }
   }
 
