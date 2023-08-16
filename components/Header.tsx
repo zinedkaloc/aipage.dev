@@ -11,7 +11,7 @@ export default function Header() {
   const { user } = useAuth();
 
   function openAuthModal() {
-    set("auth", "true");
+    set("authModal", "true");
   }
 
   function openPricesModal() {
