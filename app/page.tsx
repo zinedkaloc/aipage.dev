@@ -288,8 +288,9 @@ export default function Chat() {
             value={input}
             // update placeholder when the GPT is typing
             placeholder={isLoading ? "Generating... " : "Say something..."}
-            onChange={handleInputChange}
+            onChange={user ? handleInputChange : undefined}
             onFocus={onFocusHandler}
+            readOnly={!user}
             disabled={isLoading}
           />
           {isLoading ? null : (
