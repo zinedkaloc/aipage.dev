@@ -1,111 +1,87 @@
 "use client";
-
-import { useRef, MouseEvent, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import altogic from "@/utils/altogic";
 import useSearchParams from "@/hooks/useSearchParams";
 import Image from "next/image";
-import LoadingIcon from "@/components/LoadingIcon";
-import { XIcon } from "lucide-react";
-import LoadingSpinner from "./loadingSpinner";
+import Modal from "@/components/Modal";
+import LoadingSpinner from "@/components/loadingSpinner";
+import Button, { ButtonVariant } from "@/components/Button";
 
 export default function AuthModal() {
   const { deleteByKey, has } = useSearchParams();
-  const modalWrapper = useRef<HTMLDivElement>(null);
 
   const [selected, setSelected] = useState<number>();
-
-  function modalWrapperClickHandler(event: MouseEvent) {
-    if (!modalWrapper.current || event.target !== modalWrapper.current) return;
-    close();
-  }
 
   const loginMethods = [
     {
       name: "Google",
-      className:
-        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-black bg-black text-white active:bg-white hover:bg-white active:text-black hover:text-black disabled:opacity-50 disabled:cursor-not-allowed",
+      variant: "default",
       icon: GoogleIcon,
       handler: () => altogic.auth.signInWithProvider("google"),
     },
     {
       name: "Github",
-      className:
-        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-gray-200 bg-white text-gray-500 active:border-black hover:border-black active:text-black hover:text-black disabled:opacity-50 disabled:cursor-not-allowed",
+      variant: "light",
       icon: GithubIcon,
       handler: () => altogic.auth.signInWithProvider("github"),
     },
   ];
 
   function close() {
-    deleteByKey("auth");
+    deleteByKey("authModal");
   }
 
-  if (!has("auth")) return null;
-
   return (
-    <div
-      ref={modalWrapper}
-      className="fixed modal inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-      onClick={modalWrapperClickHandler}
-    >
-      <div className="w-full sm:w-[400px] overflow-hidden border border-gray-100 rounded-2xl shadow-xl">
-        <div className="relative flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-10">
-          <button
-            type="button"
-            className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors focus:outline-none"
-            onClick={close}
-          >
-            <XIcon />
-          </button>
-          <Link href="/">
-            <Image
-              src="/logoa.png"
-              alt="AIPage.dev logo"
-              width={150}
-              height={150}
-              draggable={false}
-              className="mx-auto h-24 w-24"
-            />
-          </Link>
-          <h3 className="text-xl font-semibold">Sign in to AIPage</h3>
-          <p className="text-sm text-gray-500">
-            Powered by AI, Perfected for You
-          </p>
-        </div>
-        <div className="flex flex-col space-y-3 bg-gray-50 px-4 py-8 sm:px-10">
-          {loginMethods.map((method, index) => (
-            <button
-              key={method.name}
-              className={method.className}
-              // this is a hack to prevent the button from being clicked twice
-              disabled={selected !== undefined}
-              onClick={() => {
-                setSelected(index);
-                method.handler();
-              }}
-            >
-              {index === selected ? (
-                <LoadingSpinner className="h-4 w-4" />
-              ) : (
-                <method.icon />
-              )}
-              <p>Continue with {method.name}</p>
-            </button>
-          ))}
-          <p className="text-center text-sm text-gray-500">
-            Enterprise login?{" "}
-            <a
-              target="_blank"
-              className="font-semibold text-gray-500 transition-colors hover:text-black"
-              href="mailto:deniz@altogic.com"
-            >
-              Contact
-            </a>
-          </p>
-        </div>
+    <Modal close={close} isOpen={has("authModal")}>
+      <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-10">
+        <Link href="/">
+          <Image
+            src="/logoa.png"
+            alt="AIPage.dev logo"
+            width={150}
+            height={150}
+            draggable={false}
+            className="mx-auto h-24 w-24"
+          />
+        </Link>
+        <h3 className="text-xl font-semibold">Sign in to AIPage</h3>
+        <p className="text-sm text-gray-500">
+          Powered by AI, Perfected for You
+        </p>
       </div>
-    </div>
+      <div className="flex flex-col space-y-3 bg-gray-50 px-4 py-8 sm:px-10">
+        {loginMethods.map((method, index) => (
+          <Button
+            key={method.name}
+            variant={method.variant as ButtonVariant}
+            // this is a hack to prevent the button from being clicked twice
+            disabled={selected !== undefined}
+            onClick={() => {
+              setSelected(index);
+              method.handler();
+            }}
+          >
+            {index === selected ? (
+              <LoadingSpinner className="h-4 w-4" />
+            ) : (
+              <method.icon />
+            )}
+            <p>Continue with {method.name}</p>
+          </Button>
+        ))}
+        <p className="text-center text-sm text-gray-500">
+          Enterprise login?{" "}
+          <a
+            target="_blank"
+            className="font-semibold text-gray-500 transition-colors hover:text-black"
+            href="mailto:deniz@altogic.com"
+          >
+            Contact
+          </a>
+        </p>
+      </div>
+    </Modal>
   );
 }
 
