@@ -61,6 +61,7 @@ export default function AuthModal() {
               setSelected(index);
               method.handler();
             }}
+            className="h-10"
           >
             {index === selected ? (
               <LoadingSpinner className="h-4 w-4" />
