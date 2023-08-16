@@ -5,7 +5,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { headers, cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-// REMOVE THIS IF YOU DON'T WANT RATE LIMITING
+/* // REMOVE THIS IF YOU DON'T WANT RATE LIMITING
 // START
 const ratelimit = redis
   ? new Ratelimit({
@@ -16,7 +16,7 @@ const ratelimit = redis
   : undefined;
 
 // END
-
+ */
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -27,7 +27,7 @@ export const runtime = "edge";
 
 export async function POST(req: Request) {
   const cookieStore = cookies();
-  // REMOVE THIS IF YOU DON'T WANT RATE LIMITING
+  /*   // REMOVE THIS IF YOU DON'T WANT RATE LIMITING
   // START
   if (ratelimit) {
     const headersList = headers();
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       });
     }
   }
-  // END
+  // END */
 
   const { messages } = await req.json();
 
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         Session: sessionToken,
       },
       body: JSON.stringify({ content: messages[0].content }),
-    },
+    }
   );
 
   const { credits } = await storeMessage.json();
