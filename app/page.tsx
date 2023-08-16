@@ -93,10 +93,6 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    console.log("iframeRef", iframeRef.current);
-  }, [iframeRef]);
-
-  useEffect(() => {
     const stream = new EventSource("/api/chat");
     stream.onmessage = (event) => {
       appendToIframe(event.data);

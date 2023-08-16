@@ -1,5 +1,5 @@
 "use client";
-import { Gem } from "lucide-react";
+import { Gem, ScrollText } from "lucide-react";
 import Popover from "@/components/Popover";
 import Badge from "@/components/Badge";
 import { useAuth } from "@/context/AuthContext";
@@ -27,6 +27,12 @@ export default function UserDropdown() {
               variant={user?.credits === 0 ? "red" : "yellow"}
             />
           </div>
+          {/*  <div className="w-full rounded-md p-2 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200 flex justify-between">
+            <IconMenu
+              text="Invoices"
+              icon={<ScrollText className="h-4 w-4" />}
+            />
+          </div>*/}
           {/*
           <Link
             href="/profile/settings"
@@ -45,7 +51,7 @@ export default function UserDropdown() {
       }
       align="end"
     >
-      <button className="group relative">
+      <button className="group relative shrink-0">
         {user ? (
           <img
             alt={user?.email || "Avatar for logged in user"}
@@ -53,7 +59,7 @@ export default function UserDropdown() {
               user.profilePicture ||
               `https://avatars.dicebear.com/api/micah/${user?.email}.svg`
             }
-            className="h-9 w-9 rounded-full border border-gray-300 transition-all duration-75 group-focus:outline-none group-active:scale-95 sm:h-10 sm:w-10"
+            className="h-9 shrink-0 w-9 rounded-full border border-gray-300 transition-all duration-75 group-focus:outline-none group-active:scale-95 sm:h-10 sm:w-10"
           />
         ) : (
           <div className="h-9 w-9 animate-pulse rounded-full border border-gray-300 bg-gray-100 sm:h-10 sm:w-10" />
