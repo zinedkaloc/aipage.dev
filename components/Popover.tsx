@@ -12,9 +12,7 @@ export default function Popover({
 }) {
   return (
     <PopoverPrimitive.Root>
-      <PopoverPrimitive.Trigger className="hidden md:inline-flex" asChild>
-        {children}
-      </PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Trigger asChild>{children}</PopoverPrimitive.Trigger>
       <PopoverPrimitive.Content
         sideOffset={8}
         align={align}
