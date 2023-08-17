@@ -29,7 +29,7 @@ export default function Modal({
     >
       <div
         className={cn(
-          "relative overflow-auto max-h-full bg-white w-full sm:w-[400px]  border border-gray-100 rounded-2xl shadow-xl p-4",
+          "relative overflow-auto max-h-full bg-white w-full sm:w-[400px] border border-gray-100 rounded-2xl shadow-xl p-4",
           className,
         )}
       >

@@ -17,12 +17,17 @@ import Button from "@/components/Button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/utils/helpers";
+import { XIcon } from "lucide-react";
+import ConfirmDialog from "@/components/ConfirmDialog";
+
+const text = "confirm delete account";
 
 export default function ProfileSettings() {
   const { user, setUser } = useAuth();
   const [name, setName] = useState(user?.name);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
   const path = usePathname();
 
   async function onNameFormSubmit(event: FormEvent) {
@@ -116,33 +121,16 @@ export default function ProfileSettings() {
           <div className="border-b border-red-600" />
           <div className="flex items-center justify-end p-3">
             <div>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
+              <ConfirmDialog
+                text={text}
+                trigger={
                   <Button variant="danger" type="button">
                     {deleting && <LoadingSpinner />}
                     <p>Delete Account</p>
                   </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel asChild>
-                      <Button variant="danger">Cancel</Button>
-                    </AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                      <Button onClick={deleteAccountHandler}>Delete</Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                }
+                onConfirm={deleteAccountHandler}
+              />
             </div>
           </div>
         </div>
