@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { Product, User } from "@/types";
+import { Product, Project, User } from "@/types";
 import altogic from "@/utils/altogic";
 import { NextResponse } from "next/server";
 
@@ -85,4 +85,20 @@ export function logout(req: Request, nextResponse: typeof NextResponse) {
   const response = nextResponse.redirect(destinationUrl, { status: 302 });
   response.cookies.delete("sessionToken");
   return response;
+}
+
+export async function fetchProjects(): Promise<Project[] | null> {
+  const cookieStore = cookies();
+  const token = cookieStore.get("sessionToken");
+
+  if (!token) return null;
+
+  // @ts-ignore
+  altogic.auth.setSession({
+    token: token.value,
+  });
+
+  const { data, errors } = await altogic.endpoint.get("/messages");
+  if (errors) throw new Error("Failed to fetch Projects");
+  return data.result;
 }

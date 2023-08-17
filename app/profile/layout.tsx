@@ -11,7 +11,7 @@ function authCheck() {
 export default function ProfileLayout({ children }: { children: ReactNode }) {
   authCheck();
   return (
-    <div className="pt-[72px]">
+    <div className="pt-[72px] profile-page flex flex-col">
       <ProfileMenu />
       {children}
     </div>
