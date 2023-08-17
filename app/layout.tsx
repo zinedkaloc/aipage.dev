@@ -6,6 +6,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { ReactNode } from "react";
 import { fetchAuthUser, fetchInvoices, fetchProducts } from "@/utils/auth";
 import PricesModal from "@/components/PricesModal";
+import Header from "@/components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -36,6 +37,7 @@ export default async function RootLayout({
     <AuthProvider user={user}>
       <html lang="en">
         <body className={inter.className}>
+          <Header />
           {children}
           <AuthModal />
           <PricesModal products={products} />

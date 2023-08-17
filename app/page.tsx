@@ -224,7 +224,6 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
-      <Header />
       <section>
         <div className="fixed bottom-16 right-6 cursor-pointer transition-colors group">
           <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute right-8 bottom-4 transform translate-y-2 w-64">

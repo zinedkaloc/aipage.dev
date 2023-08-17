@@ -21,9 +21,9 @@ export default function Header() {
   return (
     <header className="w-full px-6 py-4 absolute top-0">
       <div className="flex justify-between items-center h-10">
-        <Logo />
+        <Logo href="/" />
         <div
-          className={`flex items-center justify-center gap-4 ${
+          className={`flex items-center justify-center gap-3 sm:gap-4 ${
             user ? "flex-row-reverse" : ""
           }`}
         >
