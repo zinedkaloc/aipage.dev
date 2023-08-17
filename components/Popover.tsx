@@ -1,4 +1,4 @@
-import * as PopoverPrimitive from "@radix-ui/react-popover";
+import * as PopoverPrimitive from "@radix-ui/react-dropdown-menu";
 import { ReactNode } from "react";
 
 export default function Popover({
@@ -23,3 +23,4 @@ export default function Popover({
     </PopoverPrimitive.Root>
   );
 }
+Popover.Item = PopoverPrimitive.Item;

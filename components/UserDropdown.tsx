@@ -1,10 +1,11 @@
 "use client";
-import { Gem, ScrollText } from "lucide-react";
+import { Gem, Settings } from "lucide-react";
 import Popover from "@/components/Popover";
 import Badge from "@/components/Badge";
 import { useAuth } from "@/context/AuthContext";
 import IconMenu from "@/components/IconMenu";
 import LogoutIcon from "@/components/LogoutIcon";
+import Link from "next/link";
 
 export default function UserDropdown() {
   const { user } = useAuth();
@@ -27,31 +28,33 @@ export default function UserDropdown() {
               variant={user?.credits === 0 ? "red" : "yellow"}
             />
           </div>
-          {/*  <div className="w-full rounded-md p-2 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200 flex justify-between">
-            <IconMenu
-              text="Invoices"
-              icon={<ScrollText className="h-4 w-4" />}
-            />
-          </div>*/}
-          {/*
-          <Link
-            href="/profile/settings"
-            className="block w-full rounded-md p-2 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200"
-          >
-            <IconMenu text="Settings" icon={<Settings className="h-4 w-4" />} />
-          </Link>
-          */}
-          <a
-            href="/api/logout"
-            className="block w-full rounded-md p-2 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200"
-          >
-            <IconMenu text="Logout" icon={<LogoutIcon className="h-4 w-4" />} />
-          </a>
+          <Popover.Item asChild>
+            <Link
+              href="/profile/settings"
+              className="block !outline-none w-full rounded-md p-2 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200"
+            >
+              <IconMenu
+                text="Settings"
+                icon={<Settings className="h-4 w-4" />}
+              />
+            </Link>
+          </Popover.Item>
+          <Popover.Item asChild>
+            <a
+              href="/api/logout"
+              className="block w-full !outline-none rounded-md p-2 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200"
+            >
+              <IconMenu
+                text="Logout"
+                icon={<LogoutIcon className="h-4 w-4" />}
+              />
+            </a>
+          </Popover.Item>
         </div>
       }
       align="end"
     >
-      <button className="group relative shrink-0">
+      <button className="group relative shrink-0 !outline-none">
         {user ? (
           <img
             alt={user?.email || "Avatar for logged in user"}

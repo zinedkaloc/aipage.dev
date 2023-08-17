@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
+import { logout } from "@/utils/auth";
 
 export async function GET(req: Request) {
-  const destinationUrl = new URL("/", new URL(req.url).origin);
-  const response = NextResponse.redirect(destinationUrl, { status: 302 });
-  response.cookies.delete("sessionToken");
-  return response;
+  return logout(req, NextResponse);
 }
