@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         Session: sessionToken,
       },
       body: JSON.stringify({ content: messages[0].content }),
-    }
+    },
   );
 
   const { credits } = await storeMessage.json();
@@ -104,19 +104,17 @@ Remember to keep the design minimalistic, intuitive, and visually appealing. You
   let response;
   let stream;
 
-  do {
-    response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-16k",
-      messages: combinedMessages.map((message: any) => ({
-        role: message.role,
-        content: message.content,
-      })),
-      stream: true,
-    });
+  response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo-16k",
+    messages: combinedMessages.map((message: any) => ({
+      role: message.role,
+      content: message.content,
+    })),
+    stream: true,
+  });
 
-    stream = OpenAIStream(response);
-    // Continue generating the response if incomplete
-  } while (!stream.cancel);
+  stream = OpenAIStream(response);
+  // Continue generating the response if incomplete
 
   // If rate limited, return a fake response
   return new StreamingTextResponse(stream);

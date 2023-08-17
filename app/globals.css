@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+html,body,.profile-page {
+  min-height: 100dvh;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

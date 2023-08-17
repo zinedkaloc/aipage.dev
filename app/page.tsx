@@ -9,6 +9,7 @@ import TweetButton from "@/components/tweetButton";
 import Header from "@/components/Header";
 import { useAuth } from "@/context/AuthContext";
 import useSearchParams from "@/hooks/useSearchParams";
+import altogic from "@/utils/altogic";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -18,6 +19,7 @@ enum DeviceSize {
 
 export default function Chat() {
   const { user, setUser } = useAuth();
+  const [lastMessageId, setLastMessageId] = useState<string | null>(null);
   const [hasNoCreditsError, setHasNoCreditsError] = useState(false);
 
   const { set } = useSearchParams();
@@ -28,17 +30,30 @@ export default function Chat() {
         if (user?.credits) user.credits--;
         setUser(user);
       },
-      onFinish: (message) => {
+      onFinish: async (message) => {
+        console.log(message);
         try {
           const res = JSON.parse(message.content) as { credits: number };
           if (user?.credits) user.credits = res.credits;
           setUser(user);
           setHasNoCreditsError(true);
         } catch {
-          console.log("no json");
+          await saveResult(message.content);
         }
       },
     });
+
+  async function saveResult(result: string) {
+    const res = await fetch("/api/message", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify({ result }),
+    });
+    const { _id } = await res.json();
+    setLastMessageId(_id);
+  }
 
   const [iframeContent, setIframeContent] = useState("");
   const [imageSrc, setImageSrc] = useState<string>("");

@@ -28,3 +28,15 @@ export interface Product {
   unit_amount: number;
   unit_amount_decimal: string;
 }
+
+export interface Project {
+  _id: string;
+  content: string;
+  result: string;
+  rating: number;
+  role: string;
+  ratingText: string;
+  user: string | User;
+  createdAt: string;
+  updatedAt: string;
+}
