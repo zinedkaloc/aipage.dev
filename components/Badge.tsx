@@ -1,12 +1,14 @@
 import { cn } from "@/utils/helpers";
 
+export type BadgeVariant = "yellow" | "gray" | "red" | "black" | "green";
+
 export default function Badge({
   text,
   variant,
   className,
 }: {
   text: string;
-  variant?: "yellow" | "gray" | "red";
+  variant?: BadgeVariant;
   className?: string;
 }) {
   return (
@@ -16,6 +18,8 @@ export default function Badge({
         {
           "border-gray-400 bg-gray-400 text-white": variant === "gray",
           "border-red-500 bg-red-500 text-white": variant === "red",
+          "border-green-500 bg-green-500 text-white": variant === "green",
+          "border-black bg-black text-white": variant === "black",
           "border-yellow-400 bg-yellow-400 text-stone-700":
             variant === "yellow",
         },

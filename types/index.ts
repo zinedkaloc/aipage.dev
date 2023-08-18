@@ -38,5 +38,6 @@ export interface Project {
   ratingText: string;
   user: string | User;
   createdAt: string;
+  status: "draft" | "live";
   updatedAt: string;
 }

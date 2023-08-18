@@ -29,7 +29,7 @@ export default function ConfirmDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
-      <AlertDialogContent className="gap-0 w-[95%] max-w-[450px] p-0 border border-gray-100 rounded-2xl shadow-xl">
+      <AlertDialogContent className="overflow-hidden gap-0 w-[95%] max-w-[450px] p-0 border border-gray-100 rounded-2xl shadow-xl">
         <div className="flex flex-col items-center justify-center relative space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-8">
           <AlertDialogCancel className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors focus:outline-none">
             <XIcon />

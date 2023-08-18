@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import { useAuth } from "@/context/AuthContext";
 import useSearchParams from "@/hooks/useSearchParams";
 import altogic from "@/utils/altogic";
+import RateModal from "@/components/RateModal";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -21,27 +22,37 @@ export default function Chat() {
   const { user, setUser } = useAuth();
   const [lastMessageId, setLastMessageId] = useState<string | null>(null);
   const [hasNoCreditsError, setHasNoCreditsError] = useState(false);
-
   const { set } = useSearchParams();
+
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       onResponse: (message) => {
         setHasNoCreditsError(false);
-        if (user?.credits) user.credits--;
-        setUser(user);
+        setLastMessageId(null);
+        decreaseCredit();
       },
       onFinish: async (message) => {
-        console.log(message);
         try {
           const res = JSON.parse(message.content) as { credits: number };
-          if (user?.credits) user.credits = res.credits;
-          setUser(user);
-          setHasNoCreditsError(true);
+          setCredits(res.credits);
+          setHasNoCreditsError(res.credits === 0);
         } catch {
           await saveResult(message.content);
         }
       },
     });
+
+  function decreaseCredit(by: number = 1) {
+    if (user) {
+      setUser({ ...user, credits: user.credits - by });
+    }
+  }
+
+  function setCredits(credits: number) {
+    if (user) {
+      setUser({ ...user, credits });
+    }
+  }
 
   async function saveResult(result: string) {
     const res = await fetch("/api/message", {
@@ -53,6 +64,7 @@ export default function Chat() {
     });
     const { _id } = await res.json();
     setLastMessageId(_id);
+    set("rateModal", "true");
   }
 
   const [iframeContent, setIframeContent] = useState("");
@@ -232,228 +244,234 @@ export default function Chat() {
     }
   }
 
-  const handleStop = () => {
+  const handleStop = async () => {
     stop();
     setIsStopped(true);
+    await saveResult(iframeContent);
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
-      <section>
-        <div className="fixed bottom-16 right-6 cursor-pointer transition-colors group">
-          <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute right-8 bottom-4 transform translate-y-2 w-64">
-            Help spread the word! 📢 Post a tweet of your creation on Twitter
-            and tag @aipagedev for early access to our exclusive beta—packed
-            with stunning features. 🚀
+    <>
+      <div className="flex flex-col w-full min-h-screen bg-gradient-to-b from-white via-white to-slate-300 mx-auto px-4 md:px-16 lg:px-24 overflow-hidden items-center pt-24 md:pt-36">
+        <section>
+          <div className="fixed bottom-16 right-6 cursor-pointer transition-colors group">
+            <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute right-8 bottom-4 transform translate-y-2 w-64">
+              Help spread the word! 📢 Post a tweet of your creation on Twitter
+              and tag @aipagedev for early access to our exclusive beta—packed
+              with stunning features. 🚀
+            </div>
+            <TweetButton />
           </div>
-          <TweetButton />
-        </div>
-      </section>
+        </section>
 
-      {/* Display the image if imageSrc is set */}
+        {/* Display the image if imageSrc is set */}
 
-      <section>
-        <div className="fixed bottom-6 right-6 cursor-pointer transition-colors group">
-          <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute  right-8 bottom-4 transform translate-y-2 w-48">
-            Star us on Github to show your support
-          </div>
-          <a
-            href="https://github.com/zinedkaloc/aipage.dev"
-            target="_blank"
-            rel="noreferrer"
-            className="text-2xl"
-          >
-            ⭐️
-          </a>
-        </div>
-      </section>
-
-      {isLoading ? null : (
-        <div className="relative py-6 flex flex-col justify-center">
-          <Image
-            src="/logoa.png"
-            alt="AIPage.dev logo"
-            width={200}
-            height={200}
-            className="mx-auto h-32 w-32"
-          />
-          <div className="text-center sm:w-11/12 md:w-[800px]">
-            <h1 className="text-5xl font-bold text-ellipsis tracking-tight">
-              Create landing page easily{" "}
-              <span className="font-normal">with ai</span>
-            </h1>
-            <p className="text-lg text-gray-700 mt-4 tracking-tight">
-              Experience the future of web design. With ai, creating a landing
-              page is not only easy but also efficient, precise, and tailored to
-              your needs.
-            </p>
-          </div>
-        </div>
-      )}
-      <div className="flex flex-col w-full justify-center items-center">
-        <form
-          onSubmit={handleSubmit}
-          className="mb-4 w-full sm:w-11/12 md:w-[800px] mx-auto"
-        >
-          <input
-            className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
-              isLoading ? "rounded-xl" : "shadow-sm"
-            }`}
-            value={input}
-            // update placeholder when the GPT is typing
-            placeholder={isLoading ? "Generating... " : "Say something..."}
-            onChange={user ? handleInputChange : undefined}
-            onFocus={onFocusHandler}
-            readOnly={!user}
-            disabled={isLoading}
-          />
-          {isLoading ? null : (
-            <p className="text-xs ml-4 font-medium text-gray-500">
-              <b>Tip:</b> A landing page for Medical website
-            </p>
-          )}
-        </form>
-      </div>
-
-      {editingMode && selectedElement && (
-        <div className="absolute z-50">
-          <p>Edit the selected element:</p>
-          <input
-            value={editedContent}
-            onChange={(e) => setEditedContent(e.target.value)}
-          />
-          <button onClick={handleUpdate}>Update</button>
-        </div>
-      )}
-
-      {hasNoCreditsError ? (
-        <div className="flex flex-col items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100"
-            height="100"
-            viewBox="0 0 100 100"
-          >
-            <polygon points="50,15 85,85 15,85" fill="#FF6B6B" />
-            <text
-              x="50"
-              y="75"
-              fontSize="40"
-              fontWeight="bold"
-              textAnchor="middle"
-              fill="#FFFFFF"
+        <section>
+          <div className="fixed bottom-6 right-6 cursor-pointer transition-colors group">
+            <div className="tooltip opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-2 absolute  right-8 bottom-4 transform translate-y-2 w-48">
+              Star us on Github to show your support
+            </div>
+            <a
+              href="https://github.com/zinedkaloc/aipage.dev"
+              target="_blank"
+              rel="noreferrer"
+              className="text-2xl"
             >
-              !
-            </text>
-          </svg>
-          <h1 className="text-3xl text-gray-800 mb-2">No Credits</h1>
-          <p className="text-gray-600 mb-6">
-            You do not have enough credits to proceed with this request today.
-            Please try again tomorrow.
-          </p>
-        </div>
-      ) : (
-        iframeContent && (
-          <div className="flex flex-col items-center h-2/3 w-full">
-            <div className={`border rounded-xl ${deviceSize}`}>
-              <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                </div>
-                <div className="flex-1 text-center">
-                  <div className="flex items-center justify-between space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
-                    <div className="flex items-center w-3 h-3"></div>
-                    <div className="flex items-center space-x-2">
-                      acme.co
-                      {isLoading && (
-                        <span className="ml-4 animate-spin">🟠</span>
-                      )}
-                      <button
-                        className="ml-4 hidden md:flex"
-                        onClick={() => setDeviceSize(DeviceSize.Mobile)}
-                      >
-                        📱
-                      </button>
-                      <button
-                        className=" hidden md:flex"
-                        onClick={() => setDeviceSize(DeviceSize.Tablet)}
-                      >
-                        💻
-                      </button>
-                      <button
-                        className=" hidden md:flex"
-                        onClick={() => setDeviceSize(DeviceSize.Desktop)}
-                      >
-                        🖥️
-                      </button>
-                      <button
-                        className=""
-                        onClick={() => setCodeViewActive(!codeViewActive)}
-                      >
-                        {codeViewActive ? "🖼️" : "🖨️"}
-                      </button>
-                    </div>
-                    {/* Clear and Stop buttons */}
-                    <div className="flex items-center space-x-4">
-                      <button
-                        className={`${
-                          isLoading ? "" : "opacity-70 cursor-not-allowed"
-                        }`}
-                        onClick={handleStop}
-                      >
-                        <span role="img" aria-label="stop">
-                          🟥
-                        </span>
-                      </button>
-                      <button
-                        className={`${
-                          isStopped ? "" : "opacity-70 cursor-not-allowed"
-                        }`}
-                        onClick={() => {
-                          setIframeContent("");
-                          setIsStopped(false);
-                        }}
-                      >
-                        <span role="img" aria-label="clear">
-                          🧽
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div></div>
-                <div className="flex justify-end space-x-4">
-                  <button onClick={handleSave}>
-                    <span role="img" aria-label="paper-plane">
-                      📩
-                    </span>
-                  </button>
-                  {!isLoading && iframeContent && (
-                    <button onClick={handleEdit} className="ml-4">
-                      {editingMode ? "💾" : "✏️"}
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="h-[96rem]">
-                <Frame
-                  ref={iframeRef}
-                  sandbox="allow-same-origin allow-scripts"
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  {codeViewActive ? (
-                    <pre>{iframeContent}</pre>
-                  ) : (
-                    <div dangerouslySetInnerHTML={{ __html: iframeContent }} />
-                  )}
-                </Frame>
-              </div>
+              ⭐️
+            </a>
+          </div>
+        </section>
+
+        {isLoading ? null : (
+          <div className="relative py-6 flex flex-col justify-center">
+            <Image
+              src="/logoa.png"
+              alt="AIPage.dev logo"
+              width={200}
+              height={200}
+              className="mx-auto h-32 w-32"
+            />
+            <div className="text-center sm:w-11/12 md:w-[800px]">
+              <h1 className="text-5xl font-bold text-ellipsis tracking-tight">
+                Create landing page easily{" "}
+                <span className="font-normal">with ai</span>
+              </h1>
+              <p className="text-lg text-gray-700 mt-4 tracking-tight">
+                Experience the future of web design. With ai, creating a landing
+                page is not only easy but also efficient, precise, and tailored
+                to your needs.
+              </p>
             </div>
           </div>
-        )
-      )}
-    </div>
+        )}
+        <div className="flex flex-col w-full justify-center items-center">
+          <form
+            onSubmit={handleSubmit}
+            className="mb-4 w-full sm:w-11/12 md:w-[800px] mx-auto"
+          >
+            <input
+              className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
+                isLoading ? "rounded-xl" : "shadow-sm"
+              }`}
+              value={input}
+              // update placeholder when the GPT is typing
+              placeholder={isLoading ? "Generating... " : "Say something..."}
+              onChange={user ? handleInputChange : undefined}
+              onFocus={onFocusHandler}
+              readOnly={!user}
+              disabled={isLoading}
+            />
+            {isLoading ? null : (
+              <p className="text-xs ml-4 font-medium text-gray-500">
+                <b>Tip:</b> A landing page for Medical website
+              </p>
+            )}
+          </form>
+        </div>
+
+        {editingMode && selectedElement && (
+          <div className="absolute z-50">
+            <p>Edit the selected element:</p>
+            <input
+              value={editedContent}
+              onChange={(e) => setEditedContent(e.target.value)}
+            />
+            <button onClick={handleUpdate}>Update</button>
+          </div>
+        )}
+
+        {hasNoCreditsError ? (
+          <div className="flex flex-col items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+            >
+              <polygon points="50,15 85,85 15,85" fill="#FF6B6B" />
+              <text
+                x="50"
+                y="75"
+                fontSize="40"
+                fontWeight="bold"
+                textAnchor="middle"
+                fill="#FFFFFF"
+              >
+                !
+              </text>
+            </svg>
+            <h1 className="text-3xl text-gray-800 mb-2">No Credits</h1>
+            <p className="text-gray-600 mb-6">
+              You do not have enough credits to proceed with this request today.
+              Please try again tomorrow.
+            </p>
+          </div>
+        ) : (
+          iframeContent && (
+            <div className="flex flex-col items-center h-2/3 w-full">
+              <div className={`border rounded-xl ${deviceSize}`}>
+                <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  </div>
+                  <div className="flex-1 text-center">
+                    <div className="flex items-center justify-between space-x-2 bg-gray-200 rounded-xl mx-8 py-1 px-2">
+                      <div className="flex items-center w-3 h-3"></div>
+                      <div className="flex items-center space-x-2">
+                        acme.co
+                        {isLoading && (
+                          <span className="ml-4 animate-spin">🟠</span>
+                        )}
+                        <button
+                          className="ml-4 hidden md:flex"
+                          onClick={() => setDeviceSize(DeviceSize.Mobile)}
+                        >
+                          📱
+                        </button>
+                        <button
+                          className=" hidden md:flex"
+                          onClick={() => setDeviceSize(DeviceSize.Tablet)}
+                        >
+                          💻
+                        </button>
+                        <button
+                          className=" hidden md:flex"
+                          onClick={() => setDeviceSize(DeviceSize.Desktop)}
+                        >
+                          🖥️
+                        </button>
+                        <button
+                          className=""
+                          onClick={() => setCodeViewActive(!codeViewActive)}
+                        >
+                          {codeViewActive ? "🖼️" : "🖨️"}
+                        </button>
+                      </div>
+                      {/* Clear and Stop buttons */}
+                      <div className="flex items-center space-x-4">
+                        <button
+                          className={`${
+                            isLoading ? "" : "opacity-70 cursor-not-allowed"
+                          }`}
+                          onClick={handleStop}
+                        >
+                          <span role="img" aria-label="stop">
+                            🟥
+                          </span>
+                        </button>
+                        <button
+                          className={`${
+                            isStopped ? "" : "opacity-70 cursor-not-allowed"
+                          }`}
+                          onClick={() => {
+                            setIframeContent("");
+                            setIsStopped(false);
+                          }}
+                        >
+                          <span role="img" aria-label="clear">
+                            🧽
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                  <div className="flex justify-end space-x-4">
+                    <button onClick={handleSave}>
+                      <span role="img" aria-label="paper-plane">
+                        📩
+                      </span>
+                    </button>
+                    {!isLoading && iframeContent && (
+                      <button onClick={handleEdit} className="ml-4">
+                        {editingMode ? "💾" : "✏️"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="h-[96rem]">
+                  <Frame
+                    ref={iframeRef}
+                    sandbox="allow-same-origin allow-scripts"
+                    style={{ width: "100%", height: "100%" }}
+                  >
+                    {codeViewActive ? (
+                      <pre>{iframeContent}</pre>
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{ __html: iframeContent }}
+                      />
+                    )}
+                  </Frame>
+                </div>
+              </div>
+            </div>
+          )
+        )}
+      </div>
+      <RateModal key={lastMessageId} show={!!lastMessageId} />
+    </>
   );
 }
