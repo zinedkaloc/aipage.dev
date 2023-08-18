@@ -27,7 +27,6 @@ export default function ProfileSettings() {
   const [name, setName] = useState(user?.name);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [confirmText, setConfirmText] = useState("");
   const path = usePathname();
 
   async function onNameFormSubmit(event: FormEvent) {

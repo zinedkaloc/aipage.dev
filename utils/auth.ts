@@ -102,3 +102,19 @@ export async function fetchProjects(): Promise<Project[] | null> {
   if (errors) throw new Error("Failed to fetch Projects");
   return data.result;
 }
+
+export async function fetchProjectById(id: string): Promise<Project | null> {
+  const cookieStore = cookies();
+  const token = cookieStore.get("sessionToken");
+
+  if (!token) return null;
+
+  // @ts-ignore
+  altogic.auth.setSession({
+    token: token.value,
+  });
+
+  const { data, errors } = await altogic.db.model("messages").object(id).get();
+  if (errors) throw new Error("Failed to fetch Project");
+  return data as Project;
+}
