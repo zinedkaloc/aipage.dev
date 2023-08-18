@@ -1,46 +1,49 @@
 import { fetchProjects } from "@/utils/auth";
 import { cn } from "@/utils/helpers";
+import Link from "next/link";
+import Button from "@/components/Button";
+import ListProjects from "@/components/ListProjects";
+
+export const revalidate = 30;
 
 export default async function ProfileProjects() {
   const projects = await fetchProjects();
   const hasProjects = !!projects && projects.length > 0;
   return (
-    <div className="w-full px-6 py-6 bg-gray-50 h-full flex-1">
+    <div className="w-full px-6 py-6 bg-gray-50 h-full flex-1 flex flex-col">
       <div
         className={cn(
-          hasProjects
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-            : "",
+          "mx-auto w-full sm:max-w-screen-2xl sm:px-2.5 lg:px-20",
+          !hasProjects && "flex-1 flex flex-col",
         )}
       >
-        {hasProjects ? (
-          <div className=" md:col-span-2 lg:col-span-3 xl:col-span-4 flex flex-col space-y-10 rounded-lg border border-gray-100 bg-white relative p-6 shadow transition-all hover:shadow-lg">
-            <h2 className="text-lg font-medium text-gray-600">
-              You have no projects yet
-            </h2>
-          </div>
-        ) : (
-          projects?.map((project) => (
-            <div
-              key={project._id}
-              className="flex flex-col space-y-10 rounded-lg border border-gray-100 bg-white relative p-6 shadow transition-all hover:shadow-lg"
-            >
-              <div className="flex h-full flex-col">
-                <h2 className="text-lg font-medium text-gray-700">
-                  {project.content}
-                </h2>
-                <div className="flex items-center">
-                  <p className="text-gray-500 mb-4"></p>
-                </div>
-                <div className="mt-auto flex w-full justify-end">
-                  <time className="text-gray-500">
-                    {new Date(project.createdAt).toLocaleDateString()}
-                  </time>
-                </div>
-              </div>
+        <div
+          className={cn(
+            hasProjects
+              ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5"
+              : "flex flex-col flex-1",
+          )}
+        >
+          {!hasProjects ? (
+            <div className="flex flex-1 flex-col items-center justify-center rounded-md border border-gray-200 bg-white py-12">
+              <h2 className="z-10 text-xl font-semibold text-gray-700">
+                You don't have any projects yet!
+              </h2>
+              <img
+                alt="No links yet"
+                loading="lazy"
+                width={500}
+                className="pointer-events-none blur-0"
+                src="/no-project.png"
+              />
+              <Link href="/">
+                <Button variant="pill">Create a project</Button>
+              </Link>
             </div>
-          ))
-        )}
+          ) : (
+            <ListProjects projects={projects} />
+          )}
+        </div>
       </div>
     </div>
   );

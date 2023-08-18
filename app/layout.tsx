@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@smastrom/react-rating/style.css";
 import { Inter } from "next/font/google";
 import { Metadata } from "next";
 import AuthModal from "@/components/AuthModal";

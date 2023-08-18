@@ -15,18 +15,14 @@ export async function PUT(req: Request) {
     );
   }
 
-  const { result } = await req.json();
+  const body = await req.json();
   // @ts-ignore
   altogic.auth.setSession({
     token: token.value,
   });
 
-  const { data, errors } = await altogic.endpoint.put("/message-content", {
-    result,
-  });
+  const { data, errors } = await altogic.endpoint.put("/message-content", body);
 
-  if (errors) {
-    return NextResponse.json({ errors }, { status: 500 });
-  }
+  if (errors) return NextResponse.json({ errors }, { status: 500 });
   return NextResponse.json({ message: data }, { status: 200 });
 }
