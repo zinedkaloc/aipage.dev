@@ -40,4 +40,6 @@ export interface Project {
   createdAt: string;
   status: "draft" | "live";
   updatedAt: string;
+  click: number;
+  domains: [];
 }
