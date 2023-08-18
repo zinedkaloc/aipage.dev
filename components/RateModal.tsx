@@ -46,8 +46,6 @@ export default function RateModal({ show }: { show: boolean }) {
     }
   }
 
-  if (!show) return null;
-
   return (
     <Modal
       close={close}
