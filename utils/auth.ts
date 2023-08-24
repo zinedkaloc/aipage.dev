@@ -1,15 +1,21 @@
-import { cookies } from "next/headers";
-import { Product, Project, User } from "@/types";
+import { cookies, headers } from "next/headers";
+import { Invoice, Product, Project, User } from "@/types";
 import altogic from "@/utils/altogic";
 import { NextResponse } from "next/server";
 
-export async function fetchAuthUser() {
+function getSessionCookie() {
   const cookieStore = cookies();
   const token = cookieStore.get("sessionToken");
-  if (!token) return null;
+  return token?.value;
+}
+
+export async function fetchAuthUser() {
+  const token = getSessionCookie();
+  if (!token) return;
+
   // @ts-ignore
   altogic.auth.setSession({
-    token: token.value,
+    token,
   });
 
   const { user } = await altogic.auth.getUserFromDB();
@@ -22,24 +28,21 @@ export async function fetchProducts(): Promise<Product[]> {
   return data.data;
 }
 
-export async function fetchInvoices() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("sessionToken");
-  if (!token) return null;
-
-  const { data, errors } = await altogic.endpoint.get("/invoices");
+export async function fetchInvoices(): Promise<Invoice[]> {
+  const { data, errors } = await altogic.endpoint.get("/invoices", undefined, {
+    Session: getSessionCookie(),
+  });
   if (errors) throw new Error("Failed to fetch Invoices");
   return data.data;
 }
 
 export async function updateUser(data: Partial<User>) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("sessionToken");
-  if (!token) throw new Error("No session token found");
+  const token = getSessionCookie();
+  if (!token) throw new Error("No token found");
 
   // @ts-ignore
   altogic.auth.setSession({
-    token: token.value,
+    token,
   });
 
   const { user, errors } = await altogic.auth.getUserFromDB();
@@ -53,13 +56,12 @@ export async function updateUser(data: Partial<User>) {
 }
 
 export async function deleteUser() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("sessionToken");
-  if (!token) throw new Error("No session token found");
+  const token = getSessionCookie();
+  if (!token) throw new Error("No token found");
 
   // @ts-ignore
   altogic.auth.setSession({
-    token: token.value,
+    token,
   });
 
   const { user, errors } = await altogic.auth.getUserFromDB();
@@ -73,48 +75,71 @@ export async function deleteUser() {
 }
 
 export function logout(req: Request, nextResponse: typeof NextResponse) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("sessionToken");
-
   /*altogic.auth
     .signOut(token?.value)
     .then(console.log)
     .catch(console.error);*/
 
   const destinationUrl = new URL("/", new URL(req.url).origin);
-  const response = nextResponse.redirect(destinationUrl, { status: 302 });
+  const response = nextResponse.redirect(destinationUrl);
   response.cookies.delete("sessionToken");
   return response;
 }
 
 export async function fetchProjects(): Promise<Project[] | null> {
-  const cookieStore = cookies();
-  const token = cookieStore.get("sessionToken");
-
-  if (!token) return null;
-
-  // @ts-ignore
-  altogic.auth.setSession({
-    token: token.value,
+  const { data, errors } = await altogic.endpoint.get("/messages", undefined, {
+    Session: getSessionCookie(),
   });
-
-  const { data, errors } = await altogic.endpoint.get("/messages");
   if (errors) throw new Error("Failed to fetch Projects");
   return data.result;
 }
 
 export async function fetchProjectById(id: string): Promise<Project | null> {
-  const cookieStore = cookies();
-  const token = cookieStore.get("sessionToken");
+  const regex = /^[a-fA-F0-9]{24}$/g; // mongo id regex
+  if (!regex.test(id)) return null;
 
-  if (!token) return null;
-
-  // @ts-ignore
-  altogic.auth.setSession({
-    token: token.value,
-  });
-
-  const { data, errors } = await altogic.db.model("messages").object(id).get();
-  if (errors) throw new Error("Failed to fetch Project");
+  const { data, errors } = await altogic.endpoint.get(
+    "/project/" + id,
+    undefined,
+    {
+      Session: getSessionCookie(),
+    },
+  );
+  if (errors) {
+    console.log(JSON.stringify(errors, null, 4));
+    return null;
+  }
   return data as Project;
+}
+
+export async function updateProjectName(id: string, name: string) {
+  const token = getSessionCookie();
+
+  const { data: project, errors } = await altogic.endpoint.put(
+    `/project/name/${id}`,
+    {
+      name,
+    },
+    undefined,
+    {
+      Session: getSessionCookie(),
+    },
+  );
+
+  return { project, errors };
+}
+
+export async function deleteProject(id: string) {
+  const { errors } = await altogic.endpoint.delete(
+    `/project`,
+    {
+      id,
+    },
+    undefined,
+    {
+      Session: getSessionCookie(),
+    },
+  );
+
+  return { errors };
 }

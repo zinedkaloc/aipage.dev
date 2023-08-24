@@ -34,8 +34,10 @@ specifiers:
   react-resizable: ^3.0.5
   react-select: ^5.7.3
   tailwind-merge: ^1.14.0
+  tailwind-scrollbar-hide: ^1.1.7
   tailwindcss: ^3.3.2
   typescript: 5.0.4
+  zustand: ^4.4.1
 
 dependencies:
   '@radix-ui/react-alert-dialog': 1.0.4_h73yytdk5ntplvft5jzh7k37ce
@@ -60,6 +62,8 @@ dependencies:
   react-resizable: 3.0.5_biqbaboplfbrettd7655fr4n2y
   react-select: 5.7.4_psemcf34ovg2dno52nagbe3daa
   tailwind-merge: 1.14.0
+  tailwind-scrollbar-hide: 1.1.7
+  zustand: 4.4.1_bfoz4c5kom3f237nig75ykjhhy
 
 devDependencies:
   '@tailwindcss/forms': 0.5.4_tailwindcss@3.3.3
@@ -3682,6 +3686,10 @@ packages:
     resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==}
     dev: false
 
+  /tailwind-scrollbar-hide/1.1.7:
+    resolution: {integrity: sha512-X324n9OtpTmOMqEgDUEA/RgLrNfBF/jwJdctaPZDzB3mppxJk7TLIDmOreEDm1Bq4R9LSPu4Epf8VSdovNU+iA==}
+    dev: false
+
   /tailwindcss/3.3.3:
     resolution: {integrity: sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w==}
     engines: {node: '>=14.0.0'}
@@ -4017,4 +4025,24 @@ packages:
 
   /zod/3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
+
+  /zustand/4.4.1_bfoz4c5kom3f237nig75ykjhhy:
+    resolution: {integrity: sha512-QCPfstAS4EBiTQzlaGP1gmorkh/UL1Leaj2tdj+zZCZ/9bm0WS7sI2wnfD5lpOszFqWJ1DcPnGoY8RDL61uokw==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.7
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false

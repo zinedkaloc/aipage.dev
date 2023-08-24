@@ -10,7 +10,7 @@ export interface Product {
   active: boolean;
   billing_scheme: string;
   created: number;
-  currency: string;
+  currency: "usd" | string;
   custom_unit_amount: null;
   livemode: boolean;
   lookup_key: string | null;
@@ -32,6 +32,8 @@ export interface Product {
 export interface Project {
   _id: string;
   content: string;
+  name: string;
+  deletedAt: string;
   result: string;
   rating: number;
   role: string;
@@ -42,4 +44,41 @@ export interface Project {
   updatedAt: string;
   click: number;
   domains: [];
+}
+
+export interface Invoice {
+  id: string;
+  object: string;
+  account_country: string;
+  account_name: string;
+  account_tax_ids: null | [];
+  created: number;
+  currency: string;
+  livemode: boolean;
+  paid: boolean;
+  status: string;
+  total: number;
+  lines: {
+    object: "list";
+    data: {
+      price: {
+        id: "price_1NfeLpFctreK8fHPFa5RIeKt";
+        object: "price";
+        active: true;
+        billing_scheme: "per_unit";
+        created: number;
+        currency: "usd" | string;
+        livemode: false;
+        lookup_key: null;
+        metadata: {
+          description: string;
+          info: string;
+        };
+        nickname: "100";
+      };
+      quantity: 1;
+    }[];
+  };
+  hosted_invoice_url: string;
+  invoice_pdf: string;
 }

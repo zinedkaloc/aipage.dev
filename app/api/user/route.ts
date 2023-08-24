@@ -14,8 +14,6 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   const { errors } = await deleteUser();
 
-  console.log({ errors });
-
   if (errors) {
     return NextResponse.json({ errors }, { status: 500 });
   }

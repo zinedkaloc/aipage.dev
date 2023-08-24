@@ -16,40 +16,30 @@ interface ConfirmDialogProps {
   text: string;
   trigger: ReactNode;
   onConfirm: () => void;
+  children?: ReactNode;
 }
 
 export default function ConfirmDialog({
   trigger,
   text,
   onConfirm,
+  children,
 }: ConfirmDialogProps) {
-  const { user } = useAuth();
   const [confirmText, setConfirmText] = useState("");
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
       <AlertDialogContent className="overflow-hidden gap-0 w-[95%] max-w-[450px] p-0 border border-gray-100 rounded-2xl shadow-xl">
-        <div className="flex flex-col items-center justify-center relative space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-8">
-          <AlertDialogCancel className="absolute top-4 right-4 text-gray-500 hover:text-black transition-colors focus:outline-none">
-            <XIcon />
-          </AlertDialogCancel>
-          <img
-            alt={user?.email || "Avatar for logged in user"}
-            src={
-              user?.profilePicture ||
-              `https://avatars.dicebear.com/api/micah/${user?.email}.svg`
-            }
-            className="h-20 shrink-0 w-20 rounded-full border border-gray-300 transition-all duration-75 group-focus:outline-none group-active:scale-95 sm:h-20 sm:w-20"
-          />
-          <h3 className="text-lg font-medium">Delete Account</h3>
-          <p className="text-center text-sm text-gray-500">
-            Warning: This will permanently delete your account and all your
-            data.
-          </p>
-        </div>
-
-        <form className="flex flex-col space-y-6 bg-gray-50 px-4 py-8 text-left sm:px-8">
+        <AlertDialogCancel className="absolute top-4 z-50 right-4 text-gray-500 hover:text-black transition-colors focus:outline-none">
+          <XIcon />
+        </AlertDialogCancel>
+        {children && (
+          <div className="flex flex-col items-center justify-center relative space-y-3 border-b border-gray-200 px-4 py-4 pt-8 sm:px-8">
+            {children}
+          </div>
+        )}
+        <div className="flex flex-col space-y-6 bg-gray-50 px-4 py-8 text-left sm:px-8">
           <div>
             <label
               htmlFor="verification"
@@ -78,12 +68,15 @@ export default function ConfirmDialog({
             <Button
               disabled={confirmText !== text}
               variant="danger"
-              onClick={() => onConfirm()}
+              onClick={() => {
+                setConfirmText("");
+                onConfirm();
+              }}
             >
-              Confirm delete account
+              {text.toUpperCase()}
             </Button>
           </AlertDialogAction>
-        </form>
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   );

@@ -368,7 +368,7 @@ export default function Chat() {
           </div>
         ) : (
           iframeContent && (
-            <div className="flex flex-col items-center h-2/3 w-full">
+            <div className="flex flex-col items-center h-2/3 w-full pb-4">
               <div className={`border rounded-xl ${deviceSize}`}>
                 <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
                   <div className="flex items-center space-x-2">
