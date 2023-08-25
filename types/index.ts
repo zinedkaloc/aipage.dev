@@ -43,7 +43,18 @@ export interface Project {
   status: "draft" | "live";
   updatedAt: string;
   click: number;
-  domains: [];
+  domains: Domain[];
+}
+
+export interface Domain {
+  _id: string;
+  updatedAt: string;
+  createdAt: string;
+  _parent: string;
+  isPrimary: boolean;
+  clickCount: number;
+  status: DomainVerificationStatusProps;
+  domain: string;
 }
 
 export interface Invoice {
@@ -82,3 +93,10 @@ export interface Invoice {
   hosted_invoice_url: string;
   invoice_pdf: string;
 }
+
+export type DomainVerificationStatusProps =
+  | "Valid Configuration"
+  | "Invalid Configuration"
+  | "Pending Verification"
+  | "Domain Not Found"
+  | "Unknown Error";

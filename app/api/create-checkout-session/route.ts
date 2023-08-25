@@ -19,12 +19,10 @@ export async function POST(req: Request) {
     token: session.value,
   });
 
-  const { errors, data } = await altogic.endpoint.post(
-    "/create-checkout-session",
-    {
-      priceId,
-    },
-  );
+  const path = process.env.NEXT_PUBLIC_CREATE_SESSION_PATH as string;
+  const { errors, data } = await altogic.endpoint.post(path, {
+    priceId,
+  });
 
   if (errors) {
     return NextResponse.json({ errors }, { status: errors.status });

@@ -8,8 +8,6 @@ import useProject from "@/hooks/useProject";
 import DeleteProjectConfirmDialog from "@/components/DeleteProjectConfirmDialog";
 import NavLink from "@/components/NavLink";
 
-const text = "confirm delete project";
-
 export default function ProjectSettings() {
   const { project, setProject } = useProject();
   const { id } = useParams();

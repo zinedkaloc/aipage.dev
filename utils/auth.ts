@@ -3,7 +3,9 @@ import { Invoice, Product, Project, User } from "@/types";
 import altogic from "@/utils/altogic";
 import { NextResponse } from "next/server";
 
-function getSessionCookie() {
+const isDev = process.env.NODE_ENV === "development";
+
+export function getSessionCookie() {
   const cookieStore = cookies();
   const token = cookieStore.get("sessionToken");
   return token?.value;
@@ -23,17 +25,18 @@ export async function fetchAuthUser() {
 }
 
 export async function fetchProducts(): Promise<Product[]> {
-  const { data, errors } = await altogic.endpoint.get("/prices");
+  const path = process.env.NEXT_PUBLIC_GET_PRICES_PATH as string;
+  const { data, errors } = await altogic.endpoint.get(path);
   if (errors) throw new Error("Failed to fetch Products");
   return data.data;
 }
 
 export async function fetchInvoices(): Promise<Invoice[]> {
-  const { data, errors } = await altogic.endpoint.get("/invoices", undefined, {
+  const path = process.env.NEXT_PUBLIC_GET_INVOICES_PATH as string;
+  const { data } = await altogic.endpoint.get(path, undefined, {
     Session: getSessionCookie(),
   });
-  if (errors) throw new Error("Failed to fetch Invoices");
-  return data.data;
+  return data?.data ?? [];
 }
 
 export async function updateUser(data: Partial<User>) {
@@ -87,7 +90,7 @@ export function logout(req: Request, nextResponse: typeof NextResponse) {
 }
 
 export async function fetchProjects(): Promise<Project[] | null> {
-  const { data, errors } = await altogic.endpoint.get("/messages", undefined, {
+  const { data, errors } = await altogic.endpoint.get("/projects", undefined, {
     Session: getSessionCookie(),
   });
   if (errors) throw new Error("Failed to fetch Projects");

@@ -2,13 +2,14 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { Project } from "@/types";
+import { Domain, Project } from "@/types";
 import { useEffect } from "react";
 import useProjectList from "@/hooks/useProjectList";
 
 interface ProjectStore {
   project: Project | null;
   setProject: (project: Project | null) => void;
+  addDomain: (domain: Domain) => void;
 }
 
 const useProject = create<ProjectStore>()(
@@ -22,6 +23,16 @@ const useProject = create<ProjectStore>()(
             p._id === project?._id ? project : p,
           );
           return { projects };
+        });
+      },
+      addDomain: (domain) => {
+        set((prev) => {
+          if (!prev.project) return prev;
+          const project = {
+            ...prev.project,
+            domains: [...prev.project.domains, domain],
+          };
+          return { project };
         });
       },
     }),

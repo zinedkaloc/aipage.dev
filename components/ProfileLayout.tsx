@@ -14,7 +14,7 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
     },
     {
       id: 2,
-      name: "Domain",
+      name: "Domains",
       href: `/profile/projects/${id}/domains`,
     },
     {
