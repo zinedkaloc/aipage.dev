@@ -1,5 +1,5 @@
 import * as PopoverPrimitive from "@radix-ui/react-dropdown-menu";
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export default function Popover({
   children,

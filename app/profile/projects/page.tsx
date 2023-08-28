@@ -1,14 +1,13 @@
-import { fetchProjects } from "@/utils/auth";
 import { cn } from "@/utils/helpers";
 import Link from "next/link";
 import Button from "@/components/Button";
 import ListProjects from "@/components/ListProjects";
-
-export const revalidate = 30;
+import { fetchProjects } from "@/utils/auth";
 
 export default async function ProfileProjects() {
   const projects = await fetchProjects();
   const hasProjects = !!projects && projects.length > 0;
+
   return (
     <div className="w-full px-6 py-6 bg-gray-50 h-full flex-1 flex flex-col">
       <div

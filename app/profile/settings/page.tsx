@@ -2,32 +2,15 @@
 import { useAuth } from "@/context/AuthContext";
 import { useState, FormEvent } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/AlertDialog";
 import Button from "@/components/Button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { cn } from "@/utils/helpers";
-import { XIcon } from "lucide-react";
-import ConfirmDialog from "@/components/ConfirmDialog";
-
-const text = "confirm delete account";
+import DeleteAccountConfirmDialog from "@/components/DeleteAccountConfirmDialog";
+import NavLink from "@/components/NavLink";
 
 export default function ProfileSettings() {
   const { user, setUser } = useAuth();
   const [name, setName] = useState(user?.name);
   const [loading, setLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const path = usePathname();
 
   async function onNameFormSubmit(event: FormEvent) {
     event.preventDefault();
@@ -47,30 +30,18 @@ export default function ProfileSettings() {
     }
   }
 
-  async function deleteAccountHandler() {
-    setDeleting(true);
-    const res = await fetch("/api/user", {
-      method: "DELETE",
-    });
-    if (res.ok && res.redirected) {
-      window.location.href = res.url;
-    } else {
-      setDeleting(false);
-    }
-  }
-
   return (
-    <div className="w-full max-w-screen-xl px-6 grid items-start gap-5 py-10 md:grid-cols-5">
+    <div className="w-full max-w-screen-xl p-6 grid items-start gap-5 md:grid-cols-5">
       <div className="flex gap-1 md:grid">
-        <Link
+        <NavLink
           className={cn(
             "rounded-md p-2.5 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200 font-semibold text-black",
-            path === "/profile/settings" && "bg-gray-100 active:bg-gray-200",
+            "data-[active]:bg-gray-100 data-[active]:active:bg-gray-200",
           )}
           href="/profile/settings"
         >
           General
-        </Link>
+        </NavLink>
       </div>
       <div className="grid gap-5 md:col-span-4">
         <form
@@ -120,16 +91,7 @@ export default function ProfileSettings() {
           <div className="border-b border-red-600" />
           <div className="flex items-center justify-end p-3">
             <div>
-              <ConfirmDialog
-                text={text}
-                trigger={
-                  <Button variant="danger" type="button">
-                    {deleting && <LoadingSpinner />}
-                    <p>Delete Account</p>
-                  </Button>
-                }
-                onConfirm={deleteAccountHandler}
-              />
+              <DeleteAccountConfirmDialog />
             </div>
           </div>
         </div>

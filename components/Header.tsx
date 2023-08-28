@@ -3,12 +3,16 @@ import useSearchParams from "@/hooks/useSearchParams";
 import { useAuth } from "@/context/AuthContext";
 import UserDropdown from "@/components/UserDropdown";
 import Logo from "@/components/Logo";
-import { cn } from "@/utils/helpers";
 import Button from "@/components/Button";
+import ProjectSelect from "@/components/ProjectSelect";
+import Divider from "@/components/Divider";
+import { useParams, usePathname } from "next/navigation";
 
 export default function Header() {
   const { set } = useSearchParams();
   const { user } = useAuth();
+  const pathname = usePathname();
+  const { id } = useParams();
 
   function openAuthModal() {
     set("authModal", "true");
@@ -21,7 +25,15 @@ export default function Header() {
   return (
     <header className="w-full px-6 py-4 absolute top-0">
       <div className="flex justify-between items-center h-10">
-        <Logo href="/" />
+        <div className="flex items-center gap-2">
+          <Logo href="/" />
+          {pathname.includes(`projects/${id}`) && (
+            <>
+              <Divider className="h-8 w-8 text-gray-200" />
+              <ProjectSelect />
+            </>
+          )}
+        </div>
         <div
           className={`flex items-center justify-center gap-3 sm:gap-4 ${
             user ? "flex-row-reverse" : ""

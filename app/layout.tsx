@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import AuthModal from "@/components/AuthModal";
 import { AuthProvider } from "@/context/AuthContext";
 import { ReactNode } from "react";
-import { fetchAuthUser, fetchInvoices, fetchProducts } from "@/utils/auth";
+import { fetchAuthUser, fetchProducts } from "@/utils/auth";
 import PricesModal from "@/components/PricesModal";
 import Header from "@/components/Header";
 const inter = Inter({ subsets: ["latin"] });
@@ -35,7 +35,7 @@ export default async function RootLayout({
   const products = await fetchProducts();
 
   return (
-    <AuthProvider user={user}>
+    <AuthProvider user={user ?? null}>
       <html lang="en">
         <body className={inter.className}>
           <Header />

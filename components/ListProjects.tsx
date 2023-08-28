@@ -3,6 +3,10 @@ import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import Badge, { BadgeVariant } from "@/components/Badge";
 import { Project } from "@/types";
+import ProjectIcon from "@/components/ProjectIcon";
+import { useEffect } from "react";
+import useProjectList from "@/hooks/useProjectList";
+import useProject from "@/hooks/useProject";
 
 const mails = [
   "ozgurozalp1999@gmail.com",
@@ -18,8 +22,16 @@ interface ListProjectsProps {
 
 export default function ListProjects({ projects }: ListProjectsProps) {
   const { user } = useAuth();
+  const { setProject } = useProject();
+  const setProjects = useProjectList((state) => state.setProjects);
+
   const hasPermission = mails.includes(user?.email as string);
   const Component = hasPermission ? Link : "div";
+
+  useEffect(() => {
+    setProjects(projects ?? []);
+  }, []);
+
   return (
     <>
       {projects?.map((project) => (
@@ -27,89 +39,11 @@ export default function ListProjects({ projects }: ListProjectsProps) {
           key={project._id}
           className="flex h-full flex-col space-y-10 rounded-lg border border-gray-100 bg-white p-4 sm:p-6 transition-all"
           href={`/profile/projects/${project._id}`}
+          onClick={() => setProject(project)}
         >
           <div className="flex flex-1 items-start justify-between gap-1">
             <div className="flex space-x-3 flex-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="50"
-                viewBox="0 0 200 150"
-                className="shrink-0 self-start"
-              >
-                <rect
-                  x="10"
-                  y="10"
-                  width="180"
-                  height="130"
-                  rx="10"
-                  ry="10"
-                  fill="#F0F0F0"
-                  stroke="#CCCCCC"
-                />
-
-                <rect
-                  x="10"
-                  y="10"
-                  width="180"
-                  height="30"
-                  rx="10"
-                  ry="10"
-                  fill="#f0f0f0"
-                />
-
-                <circle cx="25" cy="25" r="4" fill="#FF605C" />
-                <circle cx="40" cy="25" r="4" fill="#FFBD44" />
-                <circle cx="55" cy="25" r="4" fill="#28CA41" />
-
-                <rect
-                  x="20"
-                  y="50"
-                  width="160"
-                  height="30"
-                  rx="10"
-                  ry="10"
-                  fill="#FFFFFF"
-                />
-                <rect
-                  x="25"
-                  y="58"
-                  width="120"
-                  rx="5"
-                  ry="5"
-                  height="14"
-                  fill="#F0F0F0"
-                />
-
-                <rect
-                  x="20"
-                  y="90"
-                  width="50"
-                  rx="10"
-                  ry="10"
-                  height="40"
-                  fill="#ddd"
-                />
-                <rect
-                  x="75"
-                  y="90"
-                  width="50"
-                  rx="10"
-                  ry="10"
-                  height="40"
-                  fill="#ddd"
-                />
-                <rect
-                  x="130"
-                  y="90"
-                  width="50"
-                  rx="5"
-                  ry="10"
-                  height="40"
-                  fill="#ddd"
-                />
-
-                <circle cx="165" cy="64" r="8" fill="#F0F0F0" />
-              </svg>
+              <ProjectIcon className="shrink-0 self-start" />
               <div className="flex-1">
                 <h2 className="text-lg leading-[1.2] font-medium text-gray-700 truncate max-w-[15ch] md:max-w-[10ch] lg:max-w-[15ch] xl:max-w-[15ch]">
                   {project.content}
