@@ -1,15 +1,12 @@
 "use client";
 import { useChat } from "ai/react";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Frame from "react-frame-component";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import html2canvas from "html2canvas";
 import TweetButton from "@/components/tweetButton";
-import Header from "@/components/Header";
 import { useAuth } from "@/context/AuthContext";
 import useSearchParams from "@/hooks/useSearchParams";
-import altogic from "@/utils/altogic";
 import RateModal from "@/components/RateModal";
 import { cn } from "@/utils/helpers";
 
@@ -79,10 +76,6 @@ export default function Chat() {
   const [editingMode, setEditingMode] = useState(false);
   const [codeViewActive, setCodeViewActive] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
-
-  useEffect(() => {
-    console.log(iframeContent);
-  }, [iframeContent]);
 
   const appendToIframe = (content: any) => {
     if (iframeRef.current) {
