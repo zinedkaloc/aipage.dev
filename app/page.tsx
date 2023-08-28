@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import useSearchParams from "@/hooks/useSearchParams";
 import altogic from "@/utils/altogic";
 import RateModal from "@/components/RateModal";
+import { cn } from "@/utils/helpers";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -78,6 +79,10 @@ export default function Chat() {
   const [editingMode, setEditingMode] = useState(false);
   const [codeViewActive, setCodeViewActive] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
+
+  useEffect(() => {
+    console.log(iframeContent);
+  }, [iframeContent]);
 
   const appendToIframe = (content: any) => {
     if (iframeRef.current) {
@@ -368,9 +373,9 @@ export default function Chat() {
           </div>
         ) : (
           iframeContent && (
-            <div className="flex flex-col items-center h-2/3 w-full pb-4">
-              <div className={`border rounded-xl ${deviceSize}`}>
-                <div className="flex items-center justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
+            <div className="flex flex-col items-center py-4 w-full">
+              <div className={cn(deviceSize)}>
+                <div className="border flex items-center bg-white rounded-t-xl justify-between p-3 border-b lg:px-12 sticky top-4 z-10">
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
@@ -451,11 +456,11 @@ export default function Chat() {
                     )}
                   </div>
                 </div>
-                <div className="h-[96rem]">
+                <div className="border bg-white rounded-b-xl border-t-0 h-[calc(100vh-100px)] overflow-auto">
                   <Frame
                     ref={iframeRef}
                     sandbox="allow-same-origin allow-scripts"
-                    style={{ width: "100%", height: "100%" }}
+                    className="w-full h-full"
                   >
                     {codeViewActive ? (
                       <pre>{iframeContent}</pre>
