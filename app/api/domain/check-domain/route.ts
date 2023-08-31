@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export default async function POST(req: Request) {
+export async function POST(req: Request) {
   const { domain } = await req.json();
 
   const [configResponse, domainResponse] = await Promise.all([
