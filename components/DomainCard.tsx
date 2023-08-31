@@ -52,7 +52,7 @@ const DomainCard = ({ domain }: DomainCardProps) => {
   }
 
   return (
-    <div className="w-full bg-white sm:shadow-md border-y sm:border border-black sm:border-gray-50 sm:rounded-lg py-10">
+    <div className="w-full bg-white border-y sm:border border-black sm:border-gray-50 sm:rounded-lg py-10">
       <div className="flex justify-between space-x-4 px-2 sm:px-10">
         <a
           href={`http://${domain.domain}`}

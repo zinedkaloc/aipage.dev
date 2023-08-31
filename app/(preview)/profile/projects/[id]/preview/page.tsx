@@ -9,5 +9,5 @@ export default async function projectPreview({
 }) {
   const project = await fetchProjectById(params.id);
   if (!project || !project.result) return notFound();
-  return <HTMLPreview html={project.result} id={params.id} />;
+  return <HTMLPreview html={project.result} />;
 }
