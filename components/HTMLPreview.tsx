@@ -14,7 +14,7 @@ import { updateProject, wait } from "@/utils/helpers";
 
 interface HTMLPreviewProps {
   html: string;
-  id: string;
+  id?: string;
 }
 
 export default function HTMLPreview({ html, id }: HTMLPreviewProps) {
@@ -26,7 +26,7 @@ export default function HTMLPreview({ html, id }: HTMLPreviewProps) {
 
   useEffect(() => {
     const element = iframe.current;
-    if (!element || !html) return;
+    if (!element || !html || !id) return;
 
     let eventElements: NodeListOf<HTMLElement> | undefined;
 
@@ -46,10 +46,10 @@ export default function HTMLPreview({ html, id }: HTMLPreviewProps) {
         element.removeEventListener("mouseout", mouseoutListener);
       });
     };
-  }, [html]);
+  }, [html, id]);
 
   async function onSave(values: [string, string][]) {
-    if (!selected) return;
+    if (!selected || !id) return;
 
     values
       .filter(([, value]) => !!value)
@@ -121,12 +121,14 @@ export default function HTMLPreview({ html, id }: HTMLPreviewProps) {
           </div>
         </div>
       )}
-      <Panel
-        onSave={onSave}
-        open={open}
-        onOpenChange={setOpen}
-        selected={selected}
-      />
+      {id && (
+        <Panel
+          onSave={onSave}
+          open={open}
+          onOpenChange={setOpen}
+          selected={selected}
+        />
+      )}
       <iframe
         ref={iframe}
         className="w-full min-h-screen cursor-pointer"

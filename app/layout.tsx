@@ -46,27 +46,30 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
+  const isAipageDomain = isAipage(headers().get("Host") as string);
   const user = await fetchAuthUser();
   const products = await fetchProducts();
-  const isAipageDomain = isAipage(headers().get("Host") as string);
   let project: Project | null = null;
 
-  if (!isAipageDomain)
+  if (!isAipageDomain) {
     project = await getProjectByDomain(headers().get("Host") as string);
-
-  if (isAipageDomain || !project) {
-    return (
-      <AuthProvider user={user ?? null}>
-        <html lang="en">
-          <body className={inter.className}>
-            {children}
-            <AuthModal />
-            <PricesModal products={products} />
-          </body>
-        </html>
-      </AuthProvider>
-    );
   }
 
-  return <HTMLPreview html={project.result} id={project._id} />;
+  return (
+    <AuthProvider user={user ?? null}>
+      <html lang="en">
+        <body className={inter.className}>
+          {isAipageDomain || !project ? (
+            <>
+              {children}
+              <AuthModal />
+              <PricesModal products={products} />
+            </>
+          ) : (
+            <HTMLPreview html={project.result} />
+          )}
+        </body>
+      </html>
+    </AuthProvider>
+  );
 }
