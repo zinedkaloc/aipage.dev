@@ -9,7 +9,7 @@ export default async function POST(req: Request) {
   }
 
   const response = await fetch(
-    `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}?teamId=${process.env.TEAM_ID_VERCEL}`,
+    `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,

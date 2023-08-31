@@ -4,18 +4,15 @@ export default async function POST(req: Request) {
   const { domain } = await req.json();
 
   const [configResponse, domainResponse] = await Promise.all([
-    fetch(
-      `https://api.vercel.com/v6/domains/${domain}/config?teamId=${process.env.TEAM_ID_VERCEL}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
-          "Content-Type": "application/json",
-        },
+    fetch(`https://api.vercel.com/v6/domains/${domain}/config`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+        "Content-Type": "application/json",
       },
-    ),
+    }),
     fetch(
-      `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}?teamId=${process.env.TEAM_ID_VERCEL}`,
+      `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}`,
       {
         method: "GET",
         headers: {
@@ -38,7 +35,7 @@ export default async function POST(req: Request) {
   let verificationResponse = null;
   if (!domainJson.verified) {
     const verificationRes = await fetch(
-      `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}/verify?teamId=${process.env.TEAM_ID_VERCEL}`,
+      `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}/verify`,
       {
         method: "POST",
         headers: {
