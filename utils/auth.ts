@@ -162,9 +162,12 @@ export async function getProjectByDomain(
       }),
     },
   );
-  console.info(res);
-  const data = await res.json();
-  console.info(data);
-  if (data.errors) return null;
-  return data;
+
+  try {
+    const data = await res.json();
+    if (data.errors) return null;
+    return data;
+  } catch {
+    return null;
+  }
 }

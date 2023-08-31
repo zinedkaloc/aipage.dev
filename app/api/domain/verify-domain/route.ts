@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     `https://api.vercel.com/v9/projects/${process.env.PROJECT_ID_VERCEL}/domains/${domain}/verify`,
     {
       headers: {
-        Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+        Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN_VERCEL}`,
         "Content-Type": "application/json",
       },
       method: "POST",

@@ -6,8 +6,9 @@ import Button from "@/components/Button";
 import LoadingSpinner from "@/components/loadingSpinner";
 import Image from "next/image";
 import Switch from "@/components/Switch";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useProject from "@/hooks/useProject";
+import { APIError } from "altogic";
 
 export default function AddDomainModal() {
   const { deleteByKey, has } = useSearchParams();
@@ -15,13 +16,17 @@ export default function AddDomainModal() {
   const [hasError, setHasError] = useState(false);
   const [isPrimary, setIsPrimary] = useState(false);
   const [domain, setDomain] = useState("");
+  const [error, setError] = useState<APIError | null>(null);
   const { id } = useParams();
   const { addDomain } = useProject();
+  const { refresh } = useRouter();
 
   function close() {
     setIsPrimary(false);
     setDomain("");
     deleteByKey("domainModal");
+    setError(null);
+    setHasError(false);
   }
 
   async function onSubmit(e: FormEvent) {
@@ -45,10 +50,13 @@ export default function AddDomainModal() {
 
       const { errors, data: domainFromAPI } = await res.json();
 
-      if (errors) setHasError(true);
-      else {
-        addDomain(domainFromAPI);
+      if (errors) {
+        setHasError(true);
+        setError(errors);
+      } else {
         close();
+        addDomain(domainFromAPI);
+        refresh();
       }
     } catch {
       setHasError(true);
@@ -75,7 +83,7 @@ export default function AddDomainModal() {
           />
           <h3 className="text-lg font-semibold">Add Domain</h3>
         </div>
-        <div className="bg-gray-50 p-4 border-t">
+        <div className="bg-gray-50 p-4 space-y-4 border-t">
           <div className="space-y-2">
             <label
               htmlFor="domain"
@@ -96,20 +104,27 @@ export default function AddDomainModal() {
                 required
               />
             </div>
+            <div className="text-[11px] text-gray-400">
+              Please enter a valid domain name (e.g. aipage.dev)
+            </div>
           </div>
-          <span className="text-[11px] text-gray-400">
-            Please enter a valid domain name (e.g. aipage.dev)
-          </span>
-
+          {/*
           <div className="flex items-center justify-between bg-gray-50 my-4">
             <p className="text-sm font-medium text-gray-900">Primary Domain</p>
             <Switch fn={setIsPrimary} checked={isPrimary} />
           </div>
+          */}
           {hasError && (
             <div className="py-2">
-              <h2 className="text-red-500 text-sm">
-                There was an error adding your domain. Please try again later.
-              </h2>
+              {error && error.items.length > 0 ? (
+                error?.items.map((item) => (
+                  <h2 className="text-red-500 text-sm">{item.message}</h2>
+                ))
+              ) : (
+                <h2 className="text-red-500 text-sm">
+                  There was an error adding your domain. Please try again later.
+                </h2>
+              )}
             </div>
           )}
           <div className="flex justify-end gap-2">

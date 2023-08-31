@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     fetch(`https://api.vercel.com/v6/domains/${domain}/config`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+        Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN_VERCEL}`,
         "Content-Type": "application/json",
       },
     }),
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN_VERCEL}`,
           "Content-Type": "application/json",
         },
       },
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN_VERCEL}`,
           "Content-Type": "application/json",
         },
       },

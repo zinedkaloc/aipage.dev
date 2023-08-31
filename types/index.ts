@@ -100,3 +100,40 @@ export type DomainVerificationStatusProps =
   | "Pending Verification"
   | "Domain Not Found"
   | "Unknown Error";
+
+export interface DomainResponse {
+  name: string;
+  apexName: string;
+  projectId: string;
+  redirect?: string | null;
+  redirectStatusCode?: (307 | 301 | 302 | 308) | null;
+  gitBranch?: string | null;
+  updatedAt?: number;
+  createdAt?: number;
+  verified: boolean;
+  verification?: {
+    type: string;
+    domain: string;
+    value: string;
+    reason: string;
+  }[];
+}
+
+export interface DomainInfo {
+  configured: boolean;
+  name: string;
+  apexName: string;
+  projectId: string;
+  redirect?: string | null;
+  redirectStatusCode?: (307 | 301 | 302 | 308) | null;
+  gitBranch?: string | null;
+  updatedAt?: number;
+  createdAt?: number;
+  verified: boolean;
+  verification?: {
+    type: string;
+    domain: string;
+    value: string;
+    reason: string;
+  }[];
+}
