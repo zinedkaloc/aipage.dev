@@ -150,6 +150,7 @@ export async function deleteProject(id: string) {
 export async function getProjectByDomain(
   domain: string,
 ): Promise<Project | null> {
+  console.info({ domain });
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_ALTOGIC_API_BASE_URL}/project/domain`,
     {
@@ -162,7 +163,9 @@ export async function getProjectByDomain(
       }),
     },
   );
+  console.info(res);
   const data = await res.json();
+  console.info(data);
   if (data.errors) return null;
   return data;
 }
