@@ -150,9 +150,19 @@ export async function deleteProject(id: string) {
 export async function getProjectByDomain(
   domain: string,
 ): Promise<Project | null> {
-  const { data, errors } = await altogic.endpoint.post("/project/domain", {
-    domain,
-  });
-  if (!data || errors) return null;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_ALTOGIC_API_BASE_URL}/project/domain`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        domain,
+      }),
+    },
+  );
+  const data = await res.json();
+  if (data.errors) return null;
   return data;
 }
