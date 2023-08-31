@@ -66,6 +66,7 @@ export function isAipage(host: string) {
     "localhost:3000",
     "localhost:3000",
     "ozgurozalp.test",
+    "aipage-dev.vercel.app",
   ];
   return hosts.includes(host);
 }
