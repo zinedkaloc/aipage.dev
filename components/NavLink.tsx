@@ -8,11 +8,13 @@ import { cn } from "@/utils/helpers";
 interface NavLinkProps extends LinkProps {
   children: ReactNode;
   className?: string;
+  target?: "_blank" | "_self" | "_parent" | "_top" | undefined;
 }
 export default function NavLink({
   className,
   href,
   children,
+  target,
   ...props
 }: NavLinkProps) {
   const path = usePathname();
@@ -21,6 +23,7 @@ export default function NavLink({
       href={href}
       data-active={path === href}
       className={cn(className)}
+      target={target}
       {...props}
     >
       {children}

@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Project } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,4 +35,37 @@ export const truncate = (str: string | null, length: number) => {
 export function toReversed<T>(arr: T[]) {
   const array = [...arr];
   return array.reverse();
+}
+
+export async function updateProject(
+  data: Omit<Partial<Project>, "_id">,
+  id?: string,
+) {
+  const body = {
+    ...data,
+    ...(id && { _id: id }),
+  };
+  const res = await fetch("/api/message", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+
+  return res.json();
+}
+
+export function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function isAipage(host: string) {
+  const hosts = [
+    "localhost",
+    "localhost:3000",
+    "localhost:3000",
+    "ozgurozalp.test",
+  ];
+  return hosts.includes(host);
 }

@@ -1,6 +1,9 @@
 import BrowserWindow from "@/components/BrowserWindow";
 import { fetchProjectById, fetchProjects } from "@/utils/auth";
 import { SetProjects } from "@/hooks/useProjectList";
+import { SetProject } from "@/hooks/useProject";
+
+export const revalidate = 0;
 
 export default async function ProjectDetail({
   params,
@@ -13,6 +16,7 @@ export default async function ProjectDetail({
   return (
     <div className="mx-auto project-detail-page grid flex-1 w-full max-w-screen-2xl py-4 sm:py-6 px-2.5 lg:px-20">
       <SetProjects projects={projects ?? []} />
+      <SetProject project={project ?? null} />
       <div className="h-full flex-1 grid">
         <div className="flex-1">
           {project?.result ? (

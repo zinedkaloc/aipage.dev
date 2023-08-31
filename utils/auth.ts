@@ -146,3 +146,13 @@ export async function deleteProject(id: string) {
 
   return { errors };
 }
+
+export async function getProjectByDomain(
+  domain: string,
+): Promise<Project | null> {
+  const { data, errors } = await altogic.endpoint.post("/project/domain", {
+    domain,
+  });
+  if (!data || errors) return null;
+  return data;
+}

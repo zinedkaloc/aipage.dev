@@ -19,11 +19,17 @@ export default function ProfileLayout({ children }: { children: ReactNode }) {
     },
     {
       id: 3,
+      name: "Preview",
+      href: `/profile/projects/${id}/preview`,
+      target: "_blank",
+    },
+    {
+      id: 4,
       name: "Integrations",
       href: `/profile/projects/${id}/integrations`,
     },
     {
-      id: 4,
+      id: 5,
       name: "Settings",
       href: `/profile/projects/${id}/settings`,
     },

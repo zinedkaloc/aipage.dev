@@ -1,41 +1,35 @@
 "use client";
-import { useState, FormEvent } from "react";
-import LoadingSpinner from "@/components/loadingSpinner";
-import Button from "@/components/Button";
-import { useParams, usePathname } from "next/navigation";
-import { cn } from "@/utils/helpers";
+
 import useProject from "@/hooks/useProject";
-import DeleteProjectConfirmDialog from "@/components/DeleteProjectConfirmDialog";
+import { FormEvent, useEffect, useState } from "react";
+import { cn, updateProject } from "@/utils/helpers";
 import NavLink from "@/components/NavLink";
+import Button from "@/components/Button";
+import DeleteProjectConfirmDialog from "@/components/DeleteProjectConfirmDialog";
+import LoadingSpinner from "@/components/loadingSpinner";
+import { useRouter } from "next/navigation";
 
-export default function ProjectSettings() {
-  const { project, setProject } = useProject();
-  const { id } = useParams();
+export default function ProjectSettingsPage() {
+  const { setProject, project } = useProject();
   const [name, setName] = useState(project?.name);
-
   const [loading, setLoading] = useState(false);
-  const path = usePathname();
+  const { refresh } = useRouter();
 
   async function onNameFormSubmit(event: FormEvent) {
     event.preventDefault();
     if (!name || name === project?.name) return;
     setLoading(true);
 
-    const res = await fetch("/api/project", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+    const { message: projectFromAPI } = await updateProject(
+      {
+        name,
       },
-      body: JSON.stringify({ name, id }),
-    });
-
-    const { project: projectFromAPI, errors } = await res.json();
+      project?._id as string,
+    );
 
     setLoading(false);
-
-    if (!errors) {
-      setProject(projectFromAPI);
-    }
+    setProject(projectFromAPI);
+    refresh();
   }
 
   return (
@@ -46,12 +40,12 @@ export default function ProjectSettings() {
             "rounded-md p-2.5 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200 font-semibold text-black",
             "data-[active]:bg-gray-100 data-[active]:active:bg-gray-200",
           )}
-          href={`/profile/projects/${id}/settings`}
+          href={`/profile/projects/${project?._id}/settings`}
         >
           General
         </NavLink>
       </div>
-      <div className="grid gap-5 md:col-span-4">
+      <section className="grid gap-5 md:col-span-4">
         <form
           className="rounded-lg border border-gray-200 bg-white"
           onSubmit={onNameFormSubmit}
@@ -99,7 +93,7 @@ export default function ProjectSettings() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

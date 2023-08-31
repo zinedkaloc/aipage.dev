@@ -8,7 +8,7 @@ import TweetButton from "@/components/tweetButton";
 import { useAuth } from "@/context/AuthContext";
 import useSearchParams from "@/hooks/useSearchParams";
 import RateModal from "@/components/RateModal";
-import { cn } from "@/utils/helpers";
+import { cn, updateProject } from "@/utils/helpers";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -53,14 +53,9 @@ export default function Chat() {
   }
 
   async function saveResult(result: string) {
-    const res = await fetch("/api/message", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      body: JSON.stringify({ result }),
+    const { _id } = await updateProject({
+      result,
     });
-    const { _id } = await res.json();
     setLastMessageId(_id);
     set("rateModal", "true");
   }
