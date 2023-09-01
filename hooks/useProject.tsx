@@ -10,6 +10,7 @@ interface ProjectStore {
   project: Project | null;
   setProject: (project: Project | null) => void;
   addDomain: (domain: Domain) => void;
+  removeDomain: (id: string) => void;
 }
 
 const useProject = create<ProjectStore>()(
@@ -31,6 +32,16 @@ const useProject = create<ProjectStore>()(
           const project = {
             ...prev.project,
             domains: [...prev.project.domains, domain],
+          };
+          return { project };
+        });
+      },
+      removeDomain: (id) => {
+        set((prev) => {
+          if (!prev.project) return prev;
+          const project = {
+            ...prev.project,
+            domains: prev.project.domains.filter((d) => d._id !== id),
           };
           return { project };
         });

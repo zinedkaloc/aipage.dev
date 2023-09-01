@@ -1,117 +1,97 @@
-import Link from "next/link";
-import { Domain, DomainVerificationStatusProps } from "@/types";
+"use client";
+
+import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
-import Chart from "@/components/Chart";
-import { capitalize, truncate } from "@/utils/helpers";
-import { ExternalLink } from "lucide-react";
+import ConfiguredSection from "@/components/ConfiguredSection";
+import { Domain } from "@/types";
 import Button from "@/components/Button";
-import CheckCircleFill from "@/components/CheckCircleFill";
-import AlertCircleFill from "@/components/AlertCircleFill";
-import XCircleFill from "@/components/XCircleFill";
-import DomainConfiguration from "@/components/DomainConfiguration";
+import { useRouter } from "next/navigation";
+import useProject from "@/hooks/useProject";
 
-export default function DomainCard({ domain }: { domain: Domain }) {
-  const data: {
-    status: DomainVerificationStatusProps;
-    response: any;
-  } = {
-    status: domain.status,
-    response: {
-      domainJson: {
-        apexName: "test.com",
-        name: "www.test.com",
-        verification: [
-          {
-            type: "TXT",
-            domain: "www.test.com",
-            value: "test",
-          },
-          {
-            type: "CNAME",
-            domain: "www.test.com",
-            value: "test",
-          },
-        ],
-      },
-    },
-  };
+interface DomainCardProps {
+  domain: Domain;
+}
 
-  const target = "google.com";
-  const type = "rewrite";
+const DomainCard = ({ domain }: DomainCardProps) => {
+  const removeDomainFromState = useProject((state) => state.removeDomain);
+  const [domainInfo, setDomainInfo] = useState(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [removing, setRemoving] = useState(false);
+
+  const { refresh } = useRouter();
+
+  useEffect(() => {
+    checkDomain();
+    const interval = setInterval(checkDomain, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  async function checkDomain() {
+    setIsValidating(true);
+    const res = await fetch("/api/domain/check-domain", {
+      method: "POST",
+      body: JSON.stringify({ domain: domain.domain }),
+    });
+    const data = await res.json();
+    setDomainInfo(data);
+    setIsValidating(false);
+  }
+
+  async function removeDomain() {
+    setRemoving(true);
+    try {
+      await fetch("/api/domain/remove-domain", {
+        method: "POST",
+        body: JSON.stringify({ domain: domain.domain }),
+      });
+      refresh();
+      removeDomainFromState(domain._id);
+    } catch {
+      setRemoving(false);
+    }
+  }
 
   return (
-    <div className="flex flex-col space-y-3 rounded-lg border border-gray-200 bg-white px-5 py-8 sm:px-10">
-      <div className="flex flex-col justify-between space-y-4 sm:flex-row sm:space-x-4">
-        <div className="flex items-center space-x-2">
-          <a
-            href={`http://${domain.domain}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center space-x-2"
-          >
-            <p className="text-lg font-medium text-gray-900">{domain.domain}</p>
-            <ExternalLink className="h-5 w-5" />
-          </a>
-          <Link
-            href={domain._id}
-            className="flex items-center space-x-1 rounded-md bg-gray-100 px-2 py-0.5 transition-all duration-75 hover:scale-105 active:scale-100"
-          >
-            <Chart className="h-4 w-4" />
-            <p className="text-sm">
-              {domain.clickCount}{" "}
-              <span className="ml-1 hidden sm:inline-block">clicks</span>
-            </p>
-          </Link>
-          {domain.isPrimary && (
-            <span className="rounded-full bg-blue-500 px-3 py-0.5 text-xs text-white">
-              Primary Domain
-            </span>
-          )}
-        </div>
+    <div className="w-full bg-white border-y sm:border border-black sm:border-gray-50 sm:rounded-lg py-10">
+      <div className="flex justify-between space-x-4 px-2 sm:px-10">
+        <a
+          href={`http://${domain.domain}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-xl text-left font-semibold flex items-center"
+        >
+          {domain.domain}
+          <span className="inline-block ml-2">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              shapeRendering="geometricPrecision"
+            >
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+              <path d="M15 3h6v6" />
+              <path d="M10 14L21 3" />
+            </svg>
+          </span>
+        </a>
         <div className="flex space-x-3">
-          <Button variant="light">Refresh</Button>
-          <Button variant="light">Edit</Button>
+          <Button onClick={checkDomain} disabled={isValidating}>
+            {isValidating ? <LoadingSpinner /> : "Refresh"}
+          </Button>
+          <Button variant="danger" onClick={removeDomain} disabled={removing}>
+            {removing ? <LoadingSpinner /> : "Remove"}
+          </Button>
         </div>
       </div>
-      <div className="flex h-10 flex-col space-y-2 sm:flex-row sm:items-center sm:space-x-5 sm:space-y-0">
-        <div className="flex items-center space-x-2">
-          {domain.status ? (
-            domain.status === "Valid Configuration" ? (
-              <CheckCircleFill className="h-6 w-6 text-blue-500" />
-            ) : domain.status === "Pending Verification" ? (
-              <AlertCircleFill className="h-6 w-6 text-yellow-500" />
-            ) : (
-              <XCircleFill className="h-6 w-6 text-red-500" />
-            )
-          ) : (
-            <LoadingSpinner className="mr-1 h-5 w-5" />
-          )}
-          <p className="text-sm text-gray-500">{domain.status}</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="flex space-x-1">
-            <p className="text-sm text-gray-500">
-              {target ? `${capitalize(type)}s to` : `No ${type} configured`}
-            </p>
-            {target && (
-              <a
-                href={target}
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm font-medium text-gray-600"
-              >
-                {truncate(
-                  target.replace(/^(?:https?:\/\/)?(?:www\.)?/i, ""),
-                  24,
-                )}
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-      {domain.status && domain.status !== "Valid Configuration" && (
-        <DomainConfiguration data={data} />
-      )}
+
+      <ConfiguredSection domainInfo={domainInfo} />
     </div>
   );
-}
+};
+
+export default DomainCard;

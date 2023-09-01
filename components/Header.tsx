@@ -14,6 +14,8 @@ export default function Header() {
   const pathname = usePathname();
   const { id } = useParams();
 
+  const isProjectPage = pathname.startsWith(`/profile/projects/${id}`);
+
   function openAuthModal() {
     set("authModal", "true");
   }
@@ -26,8 +28,8 @@ export default function Header() {
     <header className="w-full px-6 py-4 absolute top-0">
       <div className="flex justify-between items-center h-10">
         <div className="flex items-center gap-2">
-          <Logo href="/" />
-          {pathname.includes(`projects/${id}`) && (
+          <Logo href={isProjectPage ? `/profile/projects` : "/"} />
+          {isProjectPage && (
             <>
               <Divider className="h-8 w-8 text-gray-200" />
               <ProjectSelect />

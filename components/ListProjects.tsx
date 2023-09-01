@@ -24,6 +24,7 @@ export default function ListProjects({ projects }: ListProjectsProps) {
   const { user } = useAuth();
   const { setProject } = useProject();
   const setProjects = useProjectList((state) => state.setProjects);
+  const _projects = useProjectList((state) => state.projects);
 
   const hasPermission = mails.includes(user?.email as string);
   const Component = hasPermission ? Link : "div";
@@ -34,7 +35,7 @@ export default function ListProjects({ projects }: ListProjectsProps) {
 
   return (
     <>
-      {projects?.map((project) => (
+      {_projects?.map((project) => (
         <Component
           key={project._id}
           className="flex h-full flex-col space-y-10 rounded-lg border border-gray-100 bg-white p-4 sm:p-6 transition-all"
@@ -46,7 +47,7 @@ export default function ListProjects({ projects }: ListProjectsProps) {
               <ProjectIcon className="shrink-0 self-start" />
               <div className="flex-1">
                 <h2 className="text-lg leading-[1.2] font-medium text-gray-700 truncate max-w-[15ch] md:max-w-[10ch] lg:max-w-[15ch] xl:max-w-[15ch]">
-                  {project.content}
+                  {project?.name ?? project?.content}
                 </h2>
                 <div className="flex items-center">
                   <p className="text-gray-500 text-sm leading-[1]">

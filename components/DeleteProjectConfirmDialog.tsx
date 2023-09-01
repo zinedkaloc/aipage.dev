@@ -6,6 +6,7 @@ import ConfirmDialog from "@/components/ConfirmDialog";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { Project } from "@/types";
 import { useRouter } from "next/navigation";
+import useProjectList from "@/hooks/useProjectList";
 
 export default function DeleteProjectConfirmDialog({
   project,
@@ -13,7 +14,8 @@ export default function DeleteProjectConfirmDialog({
   project: Project | null;
 }) {
   const [deleting, setDeleting] = useState(false);
-  const { push } = useRouter();
+  const { push, prefetch, refresh } = useRouter();
+  const { deleteProject } = useProjectList();
 
   async function deleteProjectHandler() {
     if (!project) return;
@@ -22,8 +24,12 @@ export default function DeleteProjectConfirmDialog({
       method: "DELETE",
     });
     const { errors } = await res.json();
-    setDeleting(false);
-    if (!errors) push("/profile/projects");
+
+    if (!errors) {
+      deleteProject(project._id);
+      refresh();
+      push("/profile/projects");
+    } else setDeleting(false);
   }
 
   return (

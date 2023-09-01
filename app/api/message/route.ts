@@ -1,6 +1,7 @@
 import altogic from "@/utils/altogic";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(req: Request) {
   const cookieStore = cookies();
@@ -9,7 +10,7 @@ export async function PUT(req: Request) {
   if (!token) {
     return NextResponse.json(
       {
-        message: "You must be logged in to update your message content.",
+        message: "You must be logged in to update your project.",
       },
       { status: 401 },
     );
@@ -24,5 +25,7 @@ export async function PUT(req: Request) {
   const { data, errors } = await altogic.endpoint.put("/message-content", body);
 
   if (errors) return NextResponse.json({ errors }, { status: 500 });
+
+  revalidatePath("/profile/projects");
   return NextResponse.json({ message: data }, { status: 200 });
 }

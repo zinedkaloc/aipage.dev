@@ -4,6 +4,8 @@ import Button from "@/components/Button";
 import ListProjects from "@/components/ListProjects";
 import { fetchProjects } from "@/utils/auth";
 
+export const revalidate = 0;
+
 export default async function ProfileProjects() {
   const projects = await fetchProjects();
   const hasProjects = !!projects && projects.length > 0;

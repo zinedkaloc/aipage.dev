@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
-html,body,.profile-page {
+html,
+body,
+.profile-page {
   min-height: 100dvh;
 }
 
@@ -33,7 +34,7 @@ html,body,.profile-page {
 }
 
 body:has(.modal) {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .auth-btn {
@@ -49,7 +50,14 @@ body:has(.modal) {
   animation-iteration-count: infinite;
   -webkit-animation-timing-function: ease-out;
   animation-timing-function: ease-out;
-  background: linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,.18) 25%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.18) 75%,rgba(255,255,255,0));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.18) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.18) 75%,
+    rgba(255, 255, 255, 0)
+  );
   content: "";
   display: block;
   height: 90px;
@@ -57,22 +65,22 @@ body:has(.modal) {
   position: absolute;
   top: -150px;
   transform: rotate(-25deg);
-  width: 200px
+  width: 200px;
 }
 
 @keyframes authBtnAnimation {
   0% {
     left: -100%;
-    top: -150px
+    top: -150px;
   }
 
   50% {
     left: 100%;
-    top: 150px
+    top: 150px;
   }
 
   to {
     left: 100%;
-    top: 150px
+    top: 150px;
   }
 }
