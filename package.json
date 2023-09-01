@@ -21,6 +21,7 @@
     "altogic": "^2.3.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "html-react-parser": "^4.2.2",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.268.0",
     "monaco-editor": "^0.40.0",
