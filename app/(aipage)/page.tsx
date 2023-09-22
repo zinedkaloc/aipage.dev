@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import useSearchParams from "@/hooks/useSearchParams";
 import RateModal from "@/components/RateModal";
 import { cn, updateProject } from "@/utils/helpers";
+import Link from "next/link";
 
 enum DeviceSize {
   Mobile = "w-1/2",
@@ -289,10 +290,20 @@ export default function Chat() {
                 Create landing page easily{" "}
                 <span className="font-normal">with ai</span>
               </h1>
+
               <p className="text-lg text-gray-700 mt-4 tracking-tight">
                 Experience the future of web design. With ai, creating a landing
                 page is not only easy but also efficient, precise, and tailored
                 to your needs.
+              </p>
+              <p className="text-xs pt-2 ml-4 font-medium text-gray-500 cursor-pointer animate-pulse">
+                <Link href="https://aicomponent.dev">
+                  <b>🎉 Newly Launched:</b> AI Powered Component Generator
+                  <span className="text-blue-500 cursor-pointer">
+                    {" "}
+                    Try it now!
+                  </span>
+                </Link>
               </p>
             </div>
           </div>
