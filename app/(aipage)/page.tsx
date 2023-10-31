@@ -287,51 +287,20 @@ export default function Chat() {
             />
             <div className="text-center sm:w-11/12 md:w-[800px]">
               <h1 className="text-5xl font-bold text-ellipsis tracking-tight">
-                Create landing page easily{" "}
-                <span className="font-normal">with ai</span>
+                🚧 Under Renovation 🚧
               </h1>
 
               <p className="text-lg text-gray-700 mt-4 tracking-tight">
-                Experience the future of web design. With ai, creating a landing
-                page is not only easy but also efficient, precise, and tailored
-                to your needs.
+                A refreshed experience is on the horizon. <br /> Follow us on
+                <Link href="https://x.com/aipagedev">
+                  <b> X</b>
+                </Link>{" "}
+                to stay updated!
               </p>
-              <p className="text-xs pt-2 ml-4 font-medium text-gray-500 cursor-pointer animate-pulse">
-                <Link href="https://aicomponent.dev">
-                  <b>🎉 Newly Launched:</b> AI Powered Component Generator
-                  <span className="text-blue-500 cursor-pointer">
-                    {" "}
-                    Try it now!
-                  </span>
-                </Link>
-              </p>
+              <p className="text-xs pt-2 ml-4 font-medium text-gray-500 cursor-pointer animate-pulse"></p>
             </div>
           </div>
         )}
-        <div className="flex flex-col w-full justify-center items-center">
-          <form
-            onSubmit={handleSubmit}
-            className="mb-4 w-full sm:w-11/12 md:w-[800px] mx-auto"
-          >
-            <input
-              className={`w-full p-2 mb-3  focus:outline-0 focus:shadow-lg focus:border-gray-400 transition-shadow border rounded-full text-ellipsis border-gray-300 px-4 ${
-                isLoading ? "rounded-xl" : "shadow-sm"
-              }`}
-              value={input}
-              // update placeholder when the GPT is typing
-              placeholder={isLoading ? "Generating... " : "Say something..."}
-              onChange={user ? handleInputChange : undefined}
-              onFocus={onFocusHandler}
-              readOnly={!user}
-              disabled={isLoading}
-            />
-            {isLoading ? null : (
-              <p className="text-xs ml-4 font-medium text-gray-500">
-                <b>Tip:</b> A landing page for Medical website
-              </p>
-            )}
-          </form>
-        </div>
 
         {editingMode && selectedElement && (
           <div className="absolute z-50">
